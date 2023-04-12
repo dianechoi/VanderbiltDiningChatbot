@@ -3,11 +3,10 @@
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: my-role
-  namespace: default
+  name: deployment-creator
 rules:
-- apiGroups: ["", "apps", "extensions", "batch"]
-  resources: ["deployments", "services"]
+- apiGroups: ["apps"]
+  resources: ["deployments"]
   verbs: ["create", "get", "list", "update", "delete", "patch"]
 
 ---
@@ -17,15 +16,14 @@ rules:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: my-role-binding
-  namespace: default
+  name: deployment-creator-binding
 subjects:
-- kind: Group
-  name: my-group # Replace with the name of your group
-  apiGroup: rbac.authorization.k8s.io
+- kind: ServiceAccount
+  name: default
+  namespace: default
 roleRef:
   kind: Role
-  name: my-role
+  name: deployment-creator
   apiGroup: rbac.authorization.k8s.io
 ---
 apiVersion: apps/v1
