@@ -1,5 +1,5 @@
 kubernetes
 flask
-chatterBot-corpus
+chatterBot-corpus==1.2.0
 
 
