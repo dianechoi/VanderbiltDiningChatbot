@@ -19,25 +19,74 @@ def my_link():
   # Create a Kubernetes API client
   api = client.CoreV1Api()
 
-  # Define the container spec
-  container_spec = client.V1Container(
-      name='my-container',
-      image='nginx:latest'
-  )
+  # # Define the container spec
+  # container_spec = client.V1Container(
+  #     name='my-container',
+  #     image='nginx:latest'
+  # )
 
-  # Define the pod spec
-  pod_spec = client.V1PodSpec(
-      containers=[container_spec]
-  )
+  # # Define the pod spec
+  # pod_spec = client.V1PodSpec(
+  #     containers=[container_spec]
+  # )
 
-  # Define the pod object
-  pod = client.V1Pod(
-      metadata=client.V1ObjectMeta(
-          name='my-pod-'+str(i)
+  # # Define the pod object
+  # pod = client.V1Pod(
+  #     metadata=client.V1ObjectMeta(
+  #         name='my-pod-'+str(i)
+  #     ),
+  #     spec=pod_spec
+  # )
+  deployment = client.V1Deployment()
+  deployment.api_version = "apps/v1"
+  deployment.kind = "Deployment"
+  deployment.metadata = client.V1ObjectMeta(name="nginx-deployment-" + str(i))
+  deployment.spec = client.V1DeploymentSpec(
+      replicas=1,
+      selector=client.V1LabelSelector(
+          match_labels={"app": "nginx-" + str(i)}
       ),
-      spec=pod_spec
+      template=client.V1PodTemplateSpec(
+          metadata=client.V1ObjectMeta(
+              labels={"app": "nginx-" + str(i)}
+          ),
+          spec=client.V1PodSpec(
+              containers=[
+                  client.V1Container(
+                      name="nginx-" + str(i),
+                      image="nginx:latest",
+                      ports=[client.V1ContainerPort(container_port=80)]
+                  )
+              ]
+          )
+      )
   )
 
+  # Create the deployment
+  #api_instance = client.AppsV1Api()
+  api.create_namespaced_deployment(
+      body=deployment,
+      namespace="default"
+  )
+
+  # Define the service specification
+  service = client.V1Service()
+  service.api_version = "v1"
+  service.kind = "Service"
+  service.metadata = client.V1ObjectMeta(name="nginx-service-" + str(i))
+  service.spec = client.V1ServiceSpec(
+      selector={"app": "nginx-" + str(i)},
+      ports=[client.V1ServicePort(port=80, target_port=80,)],
+      node_port=30000 + i,
+      type="NodePort"
+  )
+
+  # Create the service
+  #api_instance = client.CoreV1Api()
+  api.create_namespaced_service(
+      body=service,
+      namespace="default"
+  )
   # Create the pod
   api.create_namespaced_pod(namespace='default', body=pod)
   return 'Click.'
