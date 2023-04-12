@@ -14,30 +14,8 @@ def my_link():
   i += 1
   print ('I got clicked!')
 
-  # Load the Kubernetes configuration from the service account
   config.load_incluster_config()
 
-  # Create a Kubernetes API client
-  #api = client.CoreV1Api()
-
-  # # Define the container spec
-  # container_spec = client.V1Container(
-  #     name='my-container',
-  #     image='nginx:latest'
-  # )
-
-  # # Define the pod spec
-  # pod_spec = client.V1PodSpec(
-  #     containers=[container_spec]
-  # )
-
-  # # Define the pod object
-  # pod = client.V1Pod(
-  #     metadata=client.V1ObjectMeta(
-  #         name='my-pod-'+str(i)
-  #     ),
-  #     spec=pod_spec
-  # )
   deployment = client.V1Deployment()
   deployment.api_version = "apps/v1"
   deployment.kind = "Deployment"
@@ -63,14 +41,12 @@ def my_link():
       )
   )
 
-  # Create the deployment
   api_instance = client.AppsV1Api()
   api_instance.create_namespaced_deployment(
       body=deployment,
       namespace="default"
   )
 
-  # Define the service specification
   service = client.V1Service()
   service.api_version = "v1"
   service.kind = "Service"
@@ -82,24 +58,19 @@ def my_link():
       type="NodePort"
   )
 
-  # Create the service
   api_instance = client.CoreV1Api()
   api_instance.create_namespaced_service(
       body=service,
       namespace="default"
   )
-  # Create a Kubernetes API client
   api = client.CoreV1Api()
   time.sleep(0.1)
-  # Retrieve the Service object by name and namespace
   service = api.read_namespaced_service(name=serviceName, namespace='default')
 
   # Get the nodePort of the Service
   for port in service.spec.ports:
       return f'129.114.26.125:{port.node_port}'
 
-  # Create the pod
-  #api.create_namespaced_pod(namespace='default', body=pod)
   return 'Click.'
 
 
