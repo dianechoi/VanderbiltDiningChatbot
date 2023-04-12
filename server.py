@@ -73,11 +73,11 @@ def my_link():
   service = client.V1Service()
   service.api_version = "v1"
   service.kind = "Service"
-  service.metadata = client.V1ObjectMeta(name="nginx-service-" + str(i))
+  serviceName = "nginx-service-" + str(i)
+  service.metadata = client.V1ObjectMeta(name=serviceName + str(i))
   service.spec = client.V1ServiceSpec(
       selector={"app": "nginx-" + str(i)},
       ports=[client.V1ServicePort(port=80, target_port=80,)],
-      node_port=30000 + i,
       type="NodePort"
   )
 
@@ -87,6 +87,16 @@ def my_link():
       body=service,
       namespace="default"
   )
+  # Create a Kubernetes API client
+  api = client.CoreV1Api()
+
+  # Retrieve the Service object by name and namespace
+  service = api.read_namespaced_service(name=serviceName, namespace='default')
+
+  # Get the nodePort of the Service
+  for port in service.spec.ports:
+      return port.node_port
+
   # Create the pod
   #api.create_namespaced_pod(namespace='default', body=pod)
   return 'Click.'
