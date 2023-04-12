@@ -1,0 +1,69 @@
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: pods-list
+  namespace: default
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["list", "create", "delete"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: pods-list
+  namespace: default
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: default
+roleRef:
+  kind: Role
+  name: pods-list
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-deployment
+  labels:
+    app: server-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: server-deployment
+  template:
+    metadata:
+      labels:
+        app: server-deployment
+    spec:
+      nodeSelector: 
+        kubernetes.io/hostname: e-ahned-pa2-vm2
+      containers:
+      - name: server-deployment
+        image: etot/server-docker:0.1
+        ports:
+        - containerPort: 5000
+        # env:
+        # - name: COUCHDB_IP
+        #   value: "129.114.26.125"
+
+        imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: server-entrypoint
+  labels:
+    app: server-deployment
+spec:
+  type: NodePort
+  selector:
+    app: server-deployment
+  ports:
+  - name: http
+    port: 5000
+    targetPort: 5000
+    nodePort: 30001
