@@ -1,0 +1,11 @@
+categories:
+- greetings
+conversations:
+- - Hello
+  - Hi
+- - Hi
+  - Hi, how are you?
+- - I'm good
+  - That's good to hear!
+- - I'm good, how are you?
+  - I'm doing great.
