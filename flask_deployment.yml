@@ -1,26 +1,31 @@
----
+# my-role.yaml
+
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: pods-list
-  namespace: default
+  name: my-role
+  namespace: my-namespace
 rules:
-- apiGroups: [""]
-  resources: ["pods", "deployments", "services"]
-  verbs: ["list", "create", "delete"]
+- apiGroups: ["", "apps", "extensions", "batch"]
+  resources: ["deployments", "services"]
+  verbs: ["create", "get", "list", "update", "delete", "patch"]
+
 ---
+
+# my-role-binding.yaml
+
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: pods-list
-  namespace: default
+  name: my-role-binding
+  namespace: my-namespace
 subjects:
-- kind: ServiceAccount
-  name: default
-  namespace: default
+- kind: Group
+  name: my-group # Replace with the name of your group
+  apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: Role
-  name: pods-list
+  name: my-role
   apiGroup: rbac.authorization.k8s.io
 ---
 apiVersion: apps/v1
