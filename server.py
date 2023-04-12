@@ -17,7 +17,7 @@ def my_link():
   config.load_incluster_config()
 
   # Create a Kubernetes API client
-  api = client.CoreV1Api()
+  #api = client.CoreV1Api()
 
   # # Define the container spec
   # container_spec = client.V1Container(
@@ -63,8 +63,8 @@ def my_link():
   )
 
   # Create the deployment
-  #api_instance = client.AppsV1Api()
-  api.create_namespaced_deployment(
+  api_instance = client.AppsV1Api()
+  api_instance.create_namespaced_deployment(
       body=deployment,
       namespace="default"
   )
@@ -82,13 +82,13 @@ def my_link():
   )
 
   # Create the service
-  #api_instance = client.CoreV1Api()
-  api.create_namespaced_service(
+  api_instance = client.CoreV1Api()
+  api_instance.create_namespaced_service(
       body=service,
       namespace="default"
   )
   # Create the pod
-  api.create_namespaced_pod(namespace='default', body=pod)
+  #api.create_namespaced_pod(namespace='default', body=pod)
   return 'Click.'
 
 
