@@ -5,7 +5,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: deployment-creator
 rules:
-- apiGroups: ["apps"]
+- apiGroups: ["", "apps"]
   resources: ["deployments", "services"]
   verbs: ["create", "get", "list", "update", "delete", "patch"]
 
