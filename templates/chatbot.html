@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Your Unique Chatbot</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+	<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <nav>
+	  <ul>
+		<li><a href="index.html">Home</a></li>
+		<li><a href="#">Chatbot ID Lookup</a></li>
+	  </ul>
+	</nav>
+	<header>
+		<h1>Unique Vanderbilt Dining Chatbot Instance</h1>
+		<p>Start chatting down below!</p>
+	</header>
+
+	<form action="/api/chat" method="POST">
+	  <input type="text" name="input">
+	  <button type="submit">Send</button>
+	</form>
+	<div id="response"></div>
+
+</body>
+
+</html>
+
+<script>
+  const form = document.querySelector('form');
+  const responseDiv = document.querySelector('#response');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      body: formData
+    });
+    const data = await response.json();
+    responseDiv.textContent = data.response;
+  });
+</script>
