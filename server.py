@@ -1,5 +1,6 @@
 from flask import Flask, render_template, url_for, request
 from kubernetes import client, config
+import time
 
 app = Flask(__name__)
 i = 0
@@ -74,7 +75,7 @@ def my_link():
   service.api_version = "v1"
   service.kind = "Service"
   serviceName = "nginx-service-" + str(i)
-  service.metadata = client.V1ObjectMeta(name=serviceName + str(i))
+  service.metadata = client.V1ObjectMeta(name=serviceName)
   service.spec = client.V1ServiceSpec(
       selector={"app": "nginx-" + str(i)},
       ports=[client.V1ServicePort(port=80, target_port=80,)],
@@ -89,7 +90,7 @@ def my_link():
   )
   # Create a Kubernetes API client
   api = client.CoreV1Api()
-
+  time.sleep(0.1)
   # Retrieve the Service object by name and namespace
   service = api.read_namespaced_service(name=serviceName, namespace='default')
 
