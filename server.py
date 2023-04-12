@@ -96,7 +96,7 @@ def my_link():
 
   # Get the nodePort of the Service
   for port in service.spec.ports:
-      return f'{port.node_port}'
+      return f'129.114.26.125{port.node_port}'
 
   # Create the pod
   #api.create_namespaced_pod(namespace='default', body=pod)
