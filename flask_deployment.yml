@@ -6,7 +6,7 @@ metadata:
   namespace: default
 rules:
 - apiGroups: [""]
-  resources: ["pods"]
+  resources: ["pods", "deployments", "services"]
   verbs: ["list", "create", "delete"]
 ---
 kind: RoleBinding
