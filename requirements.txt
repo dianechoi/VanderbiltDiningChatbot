@@ -1,5 +1,5 @@
 kubernetes
 flask
-chatterbot
+chatterbot==1.1.0
 
 
