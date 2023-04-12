@@ -22,21 +22,21 @@ def my_link():
     deployment = client.V1Deployment()
     deployment.api_version = "apps/v1"
     deployment.kind = "Deployment"
-    deployment.metadata = client.V1ObjectMeta(name="nginx-deployment-" + str(i))
+    deployment.metadata = client.V1ObjectMeta(name="bot-deployment-" + str(i))
     deployment.spec = client.V1DeploymentSpec(
         replicas=1,
         selector=client.V1LabelSelector(
-            match_labels={"app": "nginx-" + str(i)}
+            match_labels={"app": "bot-" + str(i)}
         ),
         template=client.V1PodTemplateSpec(
             metadata=client.V1ObjectMeta(
-                labels={"app": "nginx-" + str(i)}
+                labels={"app": "bot-" + str(i)}
             ),
             spec=client.V1PodSpec(
                 containers=[
                     client.V1Container(
-                        name="nginx-" + str(i),
-                        image="nginx:latest",
+                        name="bot-" + str(i),
+                        image="etot:bot-docker:0.1",
                         ports=[client.V1ContainerPort(container_port=80)]
                     )
                 ]

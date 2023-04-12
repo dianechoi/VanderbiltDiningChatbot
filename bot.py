@@ -50,7 +50,7 @@ trainer.train(
 #define app routes
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("chatbot.html")
 
 @app.route("/get")
 #function for the bot response
