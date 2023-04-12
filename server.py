@@ -72,7 +72,7 @@ def my_link():
 
     # Get the nodePort of the Service
     for port in service.spec.ports:
-        return redirect(f'129.114.26.125:{port.node_port}', code=302)
+        return redirect(f'http://129.114.26.125:{port.node_port}', code=302)
 
 
     return "Something went wrong. Please try again!"
