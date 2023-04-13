@@ -36,8 +36,8 @@ def my_link():
                 containers=[
                     client.V1Container(
                         name="bot-" + str(i),
-                        image="etot:bot-docker:0.1",
-                        ports=[client.V1ContainerPort(container_port=80)]
+                        image="etot/bot-docker:0.1",
+                        ports=[client.V1ContainerPort(container_port=5000)]
                     )
                 ]
             )
@@ -53,11 +53,11 @@ def my_link():
     service = client.V1Service()
     service.api_version = "v1"
     service.kind = "Service"
-    serviceName = "nginx-service-" + str(i)
+    serviceName = "bot-service-" + str(i)
     service.metadata = client.V1ObjectMeta(name=serviceName)
     service.spec = client.V1ServiceSpec(
-        selector={"app": "nginx-" + str(i)},
-        ports=[client.V1ServicePort(port=80, target_port=80, )],
+        selector={"app": "bot-" + str(i)},
+        ports=[client.V1ServicePort(port=5000, target_port=5000, )],
         type="NodePort"
     )
 
