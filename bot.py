@@ -33,8 +33,8 @@ chatbot = ChatBot(
 # CorpusTrainer
 trainer = ChatterBotCorpusTrainer(chatbot)
 trainer.train(
-    "/vagrant/Project/greetings_corpus.yml",
-    "/vagrant/Project/dining_corpus.yml"
+    "/app/greetings_corpus.yml",
+    "/app/dining_corpus.yml"
 )
 
 # # Terminal
