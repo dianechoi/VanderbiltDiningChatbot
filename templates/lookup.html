@@ -1,10 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <title>Chatbot ID Lookup</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+	<link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-$END$
+    <nav>
+	  <ul>
+		<li><a href="index.html">Home</a></li>
+		<li><a href="lookup.html">Chatbot ID Lookup</a></li>
+	  </ul>
+	</nav>
+	<header>
+		<h1>Chatbot ID Lookup</h1>
+		<p>Enter your specific Chatbot ID down below!</p>
+	</header>
+
+<!--	this part needs to be changed	-->
+	<form action="/api/data" method="POST">
+	  <input type="text" name="input">
+	  <button class="button" type="submit">Enter</button>
+	</form>
+	<div id="response"></div>
+
 </body>
 </html>

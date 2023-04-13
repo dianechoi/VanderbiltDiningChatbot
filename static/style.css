@@ -24,11 +24,19 @@ p {
 	margin-bottom: 30px;
 }
 
+input {
+    padding: 12px 24px;
+	border-radius: 2px;
+	font-size: 16px;
+	font-family: Georgia, sans-serif;
+}
+
 .button {
 	background-color: #687494;
 	color: #fff;
 	text-decoration: none;
 	padding: 12px 24px;
+	margin: 12px;
 	border-radius: 2px;
 	font-size: 16px;
 	transition: background-color 0.3s ease;
@@ -36,7 +44,7 @@ p {
 }
 
 .button:hover {
-	background-color: #A9B5D4;
+	background-color: #A9B5D4;]
 }
 
 nav {
@@ -67,32 +75,23 @@ nav a {
 
 nav a:hover {
   color: #A9B5D4;
+  text-decoration: none;
 }
 
-
-
-.chat-log {
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 10px;
-  max-height: 400px;
-  overflow-y: scroll;
+.row {
+    margin: 12px;
 }
 
-.message {
-  padding: 5px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  max-width: 70%;
+.form-control {
+    margin-top: 12px;
 }
 
-.user {
-  background-color: #eee;
-  float: left;
+.botText {
+    text-align: left;
+    margin-left: 10px;
 }
 
-.bot {
-  background-color: #4CAF50;
-  color: white;
-  float: right;
+.userText {
+    text-align: right;
+    margin-right: 10px;
 }
