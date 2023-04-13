@@ -5,8 +5,7 @@ COPY requirements.txt .
 #RUN pip install Cmake
 #RUN pip install --ignore-installed PyYAML
 RUN pip install chatterbot
-RUN pip install -U spacy
-RUN python -m spacy download en_core_web_sm
+RUN pip install -U spacy==2.1.3
 RUN pip install --no-cache-dir -r requirements.txt
 #RUN pip3 install --no-cache-dir -r requirementspip3.txt
 
