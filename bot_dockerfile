@@ -1,11 +1,12 @@
-FROM python:3
+FROM python:latest
 WORKDIR /app
 COPY requirements.txt .
-COPY requirementspip3.txt .
-RUN pip install Cmake
-RUN pip install --ignore-installed PyYAML
+#COPY requirementspip3.txt .
+#RUN pip install Cmake
+#RUN pip install --ignore-installed PyYAML
+RUN pip install chatterbot
 RUN pip install --no-cache-dir -r requirements.txt
-RUN pip3 install --no-cache-dir -r requirementspip3.txt
+#RUN pip3 install --no-cache-dir -r requirementspip3.txt
 
 COPY . .
 EXPOSE 5000
