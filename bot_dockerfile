@@ -5,6 +5,7 @@ COPY requirements.txt .
 #RUN pip install Cmake
 #RUN pip install --ignore-installed PyYAML
 RUN pip install chatterbot
+RUN pip install -U spacy
 RUN pip install --no-cache-dir -r requirements.txt
 #RUN pip3 install --no-cache-dir -r requirementspip3.txt
 
