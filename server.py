@@ -36,7 +36,7 @@ def my_link():
                 containers=[
                     client.V1Container(
                         name="bot-" + str(i),
-                        image="etot:bot-docker:0.1",
+                        image="etot/bot-docker:0.1",
                         ports=[client.V1ContainerPort(container_port=80)]
                     )
                 ]
