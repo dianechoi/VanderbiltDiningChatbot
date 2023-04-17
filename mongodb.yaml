@@ -63,13 +63,13 @@ spec:
           value: elliot
         - name: MONGO_INITDB_ROOT_PASSWORD
           value: erindiane
-        volumeMounts:
-        - name: "mongo-data-dir"
-          mountPath: "/data/db"
-      volumes:
-      - name: "mongo-data-dir"
-        persistentVolumeClaim:
-          claimName: "pvc"
+      #   volumeMounts:
+      #   - name: "mongo-data-dir"
+      #     mountPath: "/data/db"
+      # volumes:
+      # - name: "mongo-data-dir"
+      #   persistentVolumeClaim:
+      #     claimName: "pvc"
 ---
 apiVersion: v1
 kind: Service
