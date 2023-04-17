@@ -61,4 +61,4 @@ spec:
     # nodePort: 30002
   selector:
     app: mongo
-  type: NodePort
+
