@@ -72,7 +72,7 @@ def job1():
         f = open('/etc/hostname')
         pod_name = f.read()
         f.close()
-        pod_id = pod_name.split()[-1]
+        pod_id = pod_name.split('-')[2]
         service_name = "bot-service-" + pod_id
         config.load_incluster_config()
         api_pod = client.CoreV1Api()
