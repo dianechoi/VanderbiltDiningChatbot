@@ -10,8 +10,10 @@ import time
 # spacy.load("en")
 app = Flask(__name__)
 
+config.load_incluster_config()
 api = client.CoreV1Api()
 time.sleep(0.1)
+
 service = api.read_namespaced_service(name="mongo-nodeport-svc", namespace='default')
 ipMongodb = service.spec.clusterIP
 
