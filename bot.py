@@ -3,15 +3,22 @@ from flask import Flask, render_template, request
 from chatterbot import ChatBot
 from chatterbot.trainers import ListTrainer
 from chatterbot.trainers import ChatterBotCorpusTrainer
+from kubernetes import client, config
+import time
 
 
 # spacy.load("en")
 app = Flask(__name__)
 
+api = client.CoreV1Api()
+time.sleep(0.1)
+service = api.read_namespaced_service(name="mongo-nodeport-svc", namespace='default')
+ipMongodb = service.spec.clusterIP
+
 chatbot = ChatBot(
     'My Chatterbot',
-    storage_adapter='chatterbot.storage.SQLStorageAdapter',
-    database_uri='sqlite:///db.sqlite3', # refresh data each time chatbot is run 
+    storage_adapter='chatterbot.storage.MongoDatabaseAdapter',
+    database_uri='mongodb://elliot:erindiane@' + ipMongodb + ":27017/training?authSource=admin", # refresh data each time chatbot is run 
     logic_adapters=[{
         'import_path': 'chatterbot.logic.BestMatch',
         'default_response': 'I am sorry, but I do not understand.',
