@@ -75,7 +75,7 @@ def job1():
         pod_name_list = pod_name.split('-')
         pod_id = pod_name_list[2]
         service_name = "bot-service-" + pod_id
-        deployment_name = pod_name_list[0] + pod_name_list[1] + pod_name_list[2] 
+        deployment_name = pod_name_list[0] + "-" + pod_name_list[1] + "-" + pod_name_list[2] 
         config.load_incluster_config()
         api_service = client.CoreV1Api()
         api_deployment = client.AppsV1Api()
