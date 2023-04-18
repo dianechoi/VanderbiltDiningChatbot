@@ -40,11 +40,11 @@ chatbot = ChatBot(
 # ])
 
 # CorpusTrainer
-# trainer = ChatterBotCorpusTrainer(chatbot)
-# trainer.train(
-#     "/app/greetings_corpus.yml",
-#     "/app/dining_corpus.yml"
-# )
+trainer = ChatterBotCorpusTrainer(chatbot)
+trainer.train(
+    "/app/greetings_corpus.yml",
+    "/app/dining_corpus.yml"
+)
 
 # # Terminal
 # exit_conditions = (":q", "quit", "exit")
