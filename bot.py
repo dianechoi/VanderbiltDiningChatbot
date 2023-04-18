@@ -15,7 +15,7 @@ api = client.CoreV1Api()
 time.sleep(0.1)
 
 service = api.read_namespaced_service(name="mongo-nodeport-svc", namespace='default')
-ipMongodb = service.spec.clusterIP
+ipMongodb = service.spec.cluster_ip
 
 chatbot = ChatBot(
     'My Chatterbot',
