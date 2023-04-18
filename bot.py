@@ -72,13 +72,18 @@ def job1():
         f = open('/etc/hostname')
         pod_name = f.read()
         f.close()
-        pod_id = pod_name.split('-')[2]
+        pod_name_list = pod_name.split('-')
+        pod_id = pod_name_list[2]
         service_name = "bot-service-" + pod_id
+        deployment_name = pod_name_list[:3]
         config.load_incluster_config()
-        api_pod = client.CoreV1Api()
+        api_service = client.CoreV1Api()
+        api_deployment = client.AppsV1Api()
         time.sleep(0.1)
-        service_result = api_pod.delete_namespaced_service(name = service_name, namespace = 'default')
-        pod_result = api_pod.delete_namespaced_pod(name = pod_name, namespace='default')
+        service_result = api_service.delete_namespaced_service(name = service_name, namespace = 'default')
+        deployment_result = api_deployment.delete_namespaced_deployment(name = deployment_name, namespace = 'default')
+
+        #pod_result = api_pod.delete_namespaced_pod(name = pod_name, namespace='default')
 
 
 # Browser

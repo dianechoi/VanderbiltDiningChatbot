@@ -24,7 +24,7 @@ def my_link():
     deployment.kind = "Deployment"
     deployment.metadata = client.V1ObjectMeta(name="bot-deployment-" + str(i))
     deployment.spec = client.V1DeploymentSpec(
-        replicas=0,
+        replicas=1,
         selector=client.V1LabelSelector(
             match_labels={"app": "bot-" + str(i)}
         ),
