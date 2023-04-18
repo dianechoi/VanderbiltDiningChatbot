@@ -1,19 +1,31 @@
 from flask import Flask, render_template, request
-# import spacy
 from chatterbot import ChatBot
 from chatterbot.trainers import ListTrainer
 from chatterbot.trainers import ChatterBotCorpusTrainer
 from kubernetes import client, config
 import time
+from flask_apscheduler import APScheduler
+import os
+import signal
 
+class Config:
+    SCHEDULER_API_ENABLED = True
 
-# spacy.load("en")
 app = Flask(__name__)
+app.config.from_object(Config())
+
+scheduler = APScheduler()
+scheduler.init_app(app)
+scheduler.start()
+
+i = 0
+timer = 300
+
 
 config.load_incluster_config()
 api = client.CoreV1Api()
 time.sleep(0.1)
-
+timer = 300
 service = api.read_namespaced_service(name="mongo-nodeport-svc", namespace='default')
 ipMongodb = service.spec.cluster_ip
 
@@ -55,6 +67,14 @@ trainer.train(
 #     else:
 #         print(f"{chatbot.get_response(query)}")
 
+@scheduler.task('interval', id='do_job_1', seconds=1, misfire_grace_time=900)
+def job1():
+    global timer
+    timer -= 1
+    if timer <= 0:
+        sig = getattr(signal, "SIGKILL", signal.SIGTERM)
+        os.kill(os.getpid(), sig)
+
 # Browser
 #define app routes
 @app.route("/")
@@ -64,6 +84,8 @@ def index():
 @app.route("/get")
 #function for the bot response
 def get_bot_response():
+    global timer
+    timer = 300
     userText = request.args.get('msg')
     return str(chatbot.get_response(userText))
 
