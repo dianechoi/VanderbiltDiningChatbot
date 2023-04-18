@@ -5,8 +5,6 @@ from chatterbot.trainers import ChatterBotCorpusTrainer
 from kubernetes import client, config
 import time
 from flask_apscheduler import APScheduler
-import os
-import signal
 
 class Config:
     SCHEDULER_API_ENABLED = True
@@ -19,13 +17,12 @@ scheduler.init_app(app)
 scheduler.start()
 
 i = 0
-timer = 300
+timer = 30
 
 
 config.load_incluster_config()
 api = client.CoreV1Api()
 time.sleep(0.1)
-timer = 300
 service = api.read_namespaced_service(name="mongo-nodeport-svc", namespace='default')
 ipMongodb = service.spec.cluster_ip
 
@@ -72,8 +69,17 @@ def job1():
     global timer
     timer -= 1
     if timer <= 0:
-        sig = getattr(signal, "SIGKILL", signal.SIGTERM)
-        os.kill(os.getpid(), sig)
+        f = open('/etc/hostname')
+        pod_name = f.read()
+        f.close()
+        pod_id = pod_name.split()[-1]
+        service_name = "bot-service-" + pod_id
+        config.load_incluster_config()
+        api_pod = client.CoreV1Api()
+        time.sleep(0.1)
+        service_result = api_pod.delete_namespaced_service(name = service_name, namespace = 'default')
+        pod_result = api_pod.delete_namespaced_pod(name = pod_name, namespace='default')
+
 
 # Browser
 #define app routes
@@ -85,7 +91,7 @@ def index():
 #function for the bot response
 def get_bot_response():
     global timer
-    timer = 300
+    timer = 30
     userText = request.args.get('msg')
     return str(chatbot.get_response(userText))
 
