@@ -1874,11 +1874,11 @@ def webScrapeAndTrain():
     CONNECTION_STRING = 'mongodb://elliot:erindiane@' + ipMongodb + ":27017"
 
     # Create a connection using MongoClient. You can import MongoClient or use pymongo.MongoClient
-    client = MongoClient(CONNECTION_STRING)
-    dbnames = client.list_database_names()
+    clientMongo = MongoClient(CONNECTION_STRING)
+    dbnames = clientMongo.list_database_names()
     if 'training' in dbnames:
-        client.drop_database("training")
-    db = client["training"]
+        clientMongo.drop_database("training")
+    db = clientMongo["training"]
 
     chatbot = ChatBot(
         'My Chatterbot',
@@ -1953,7 +1953,7 @@ def webScrapeAndTrain():
 
     trainer = ChatterBotCorpusTrainer(chatbot)
     trainer.train(
-        "/app/VanderbiltDiningChatbot/training_data.yaml"
+        "/app/training_data.yaml"
     )
 
 def set_chrome_options() -> Options:
