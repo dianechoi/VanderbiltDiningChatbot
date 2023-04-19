@@ -74,7 +74,7 @@ for option in temp_dining_halls:
 tempDict = {"conversations":temp}
 corpus.append(tempDict)
 
-with open(r'~/training_data.yaml', 'w') as file:
+with open(r'~/VanderbiltDiningChatbot/training_data.yaml', 'w') as file:
     documents = yaml.dump(corpus, file)
 
 
