@@ -42,7 +42,7 @@ corpus = []
 dict_file = [{'sports' : ['soccer', 'football', 'basketball', 'cricket', 'hockey', 'table tennis']},
 {'countries' : ['Pakistan', 'USA', 'India', 'China', 'Germany', 'France', 'Spain']}]
 
-temp = ["food"]
+temp = ["food", "dining halls"]
 tempDict = {"categories":temp}
 corpus.append(tempDict)
 
