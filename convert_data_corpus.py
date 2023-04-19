@@ -78,7 +78,7 @@ tempDict = {"conversations":temp}
 corpus["conversations"] = temp
 
 with open(r'/home/cc/VanderbiltDiningChatbot/training_data.yaml', 'w+') as file:
-    documents = yaml.dump(json.dumps(corpus), file)
+    documents = yaml.dump(corpus, file)
 
 
 
