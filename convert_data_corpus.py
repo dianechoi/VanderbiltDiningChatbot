@@ -41,8 +41,6 @@ chatbot = ChatBot(
 
 corpus = dict()
 
-dict_file = [{'sports' : ['soccer', 'football', 'basketball', 'cricket', 'hockey', 'table tennis']},
-{'countries' : ['Pakistan', 'USA', 'India', 'China', 'Germany', 'France', 'Spain']}]
 
 temp = ["food", "dining halls"]
 tempDict = {"categories":temp}
@@ -50,22 +48,14 @@ corpus["categories"] = temp
 
 temp = []
 
-breakfast_2301_dict = {}
-daily_offerings_2301_dict = {}
-breakfast_2301_dict["smoothie"] = ["arugala", "blueberries"]
-breakfast_2301_dict["bowl"] = ["chicken", "rice"]
-daily_offerings_2301_dict["nut"] = ["boop", "shmoop"]
-daily_offerings_2301_dict["cracker"] = ["top", "mop"]
-
-temp_dining_halls = ["2301 breakfast", "2301 daily offerings"]
 reference = {
     "2301 breakfast": breakfast_2301_dict,
     "2301 daily offerings": daily_offerings_2301_dict
 }
 
 
-dining_halls = ["2301 breakfast", "2301 daily offerings", "rand breakfast", "rand lunch", "commons breakfast", "commons lunch", "commons dinner", "commons daily offerings", "kissam breakfast", "kissam lunch", "kissam dinner", "kissam daily offerings", "ebi breakfast", "ebi lunch", "ebi dinner", "ebi daily offerings", "roth breakfast", "roth lunch", "roth dinner", "roth daily offerings", "zeppos breakfast", "zeppos lunch", "zeppos dinner", "zeppos daily offerings"]
-for option in temp_dining_halls:
+dining_halls_corpus = ["2301 breakfast", "2301 daily offerings", "rand breakfast", "rand lunch", "commons breakfast", "commons lunch", "commons dinner", "commons daily offerings", "kissam breakfast", "kissam lunch", "kissam dinner", "kissam daily offerings", "ebi breakfast", "ebi lunch", "ebi dinner", "ebi daily offerings", "roth breakfast", "roth lunch", "roth dinner", "roth daily offerings", "zeppos breakfast", "zeppos lunch", "zeppos dinner", "zeppos daily offerings"]
+for option in dining_halls_corpus:
     q = "What are the serving for " + option + "?"
     a = "They are serving the following: "
     foods = 's, '.join(list(reference[option].keys()))
@@ -77,15 +67,13 @@ tempDict = {"conversations":temp}
 #corpus.append(tempDict)
 corpus["conversations"] = temp
 
-with open(r'/home/cc/VanderbiltDiningChatbot/training_data.yaml', 'w+') as file:
+with open(r'/app/training_data.yaml', 'w+') as file:
     documents = yaml.dump(corpus, file)
-
-
 
 
 
 trainer = ChatterBotCorpusTrainer(chatbot)
 trainer.train(
-    "/home/cc/VanderbiltDiningChatbot/training_data.yaml"
+    "/app/VanderbiltDiningChatbot/training_data.yaml"
 )
 
