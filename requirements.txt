@@ -1,4 +1,5 @@
 kubernetes
 flask
+pymongo==3.13.0
 
 

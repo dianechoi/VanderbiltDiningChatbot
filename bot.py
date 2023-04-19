@@ -1,26 +1,47 @@
 from flask import Flask, render_template, request
+from chatterbot import ChatBot
+from chatterbot.trainers import ListTrainer
+from chatterbot.trainers import ChatterBotCorpusTrainer
+from kubernetes import client, config
+from flask_apscheduler import APScheduler
+from pymongo import MongoClient
+import time
 import random
 import string
-from pymongo import MongoClient
-# from chatterbot import ChatBot
-# from chatterbot.trainers import ListTrainer
-# from chatterbot.trainers import ChatterBotCorpusTrainer
 
-# spacy.load("en")
+
+class Config:
+    SCHEDULER_API_ENABLED = True
+
+
 app = Flask(__name__)
+app.config.from_object(Config())
+
+scheduler = APScheduler()
+scheduler.init_app(app)
+scheduler.start()
+
+i = 0
+timer = 30
+
+config.load_incluster_config()
+api = client.CoreV1Api()
+time.sleep(0.1)
+service = api.read_namespaced_service(name="mongo-nodeport-svc", namespace='default')
+ipMongodb = service.spec.cluster_ip
 
 chatbot = ChatBot(
     'My Chatterbot',
-    storage_adapter='chatterbot.storage.SQLStorageAdapter',
-    database_uri='sqlite:///db.sqlite3', # refresh data each time chatbot is run 
+    storage_adapter='chatterbot.storage.MongoDatabaseAdapter',
+    database_uri='mongodb://elliot:erindiane@' + ipMongodb + ":27017/training?authSource=admin",
+    # refresh data each time chatbot is run
     logic_adapters=[{
         'import_path': 'chatterbot.logic.BestMatch',
         'default_response': 'I am sorry, but I do not understand.',
     }
-    ], 
-    read_only=True # prevents chatbot from learning from user's input
+    ],
+    read_only=True  # prevents chatbot from learning from user's input
 )
-
 
 # # ListTrainer
 # trainer = ListTrainer(chatbot)
@@ -32,11 +53,12 @@ chatbot = ChatBot(
 # ])
 
 # CorpusTrainer
-# trainer = ChatterBotCorpusTrainer(chatbot)
-# trainer.train(
-#     "/app/greetings_corpus.yml",
-#     "/app/dining_corpus.yml"
-# )
+trainer = ChatterBotCorpusTrainer(chatbot)
+trainer.train(
+    "/app/greetings_corpus.yml",
+    "/app/dining_corpus.yml"
+)
+
 
 # # Terminal
 # exit_conditions = (":q", "quit", "exit")
@@ -46,6 +68,28 @@ chatbot = ChatBot(
 #         break
 #     else:
 #         print(f"{chatbot.get_response(query)}")
+
+@scheduler.task('interval', id='do_job_1', seconds=1, misfire_grace_time=900)
+def job1():
+    global timer
+    timer -= 1
+    if timer <= 0:
+        f = open('/etc/hostname')
+        pod_name = f.read()
+        f.close()
+        pod_name_list = pod_name.split('-')
+        pod_id = pod_name_list[2]
+        service_name = "bot-service-" + pod_id
+        deployment_name = pod_name_list[0] + "-" + pod_name_list[1] + "-" + pod_name_list[2]
+        config.load_incluster_config()
+        api_service = client.CoreV1Api()
+        api_deployment = client.AppsV1Api()
+        time.sleep(0.1)
+        service_result = api_service.delete_namespaced_service(name=service_name, namespace='default')
+        deployment_result = api_deployment.delete_namespaced_deployment(name=deployment_name, namespace='default')
+
+        # pod_result = api_pod.delete_namespaced_pod(name = pod_name, namespace='default')
+
 
 s = string.ascii_uppercase + '0123456789'
 chat_id = ''.join(random.choice(s) for i in range(20))
@@ -68,11 +112,13 @@ col = db[chat_id]
 @app.route("/get")
 # function for the bot response
 def get_bot_response():
+    global timer
     global chat_id
     global CONNECTION
     global client
     global db
     global col
+    timer = 30
     chat_data = dict()
     user_text = "" + request.args.get('msg')
     response = str(chatbot.get_response(user_text))
