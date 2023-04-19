@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scraper-deployment
+  labels:
+    app: scraper-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scraper-deployment
+  template:
+    metadata:
+      labels:
+        app: scraper-deployment
+    spec:
+      nodeSelector: 
+        kubernetes.io/hostname: e-ahned-pa2-vm2
+      containers:
+      - name: scraper-deployment
+        image: etot/scraper-docker:0.1
+        ports:
+        - containerPort: 5000
+        # env:
+        # - name: COUCHDB_IP
+        #   value: "129.114.26.125"
+
+        imagePullPolicy: Always
+---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: scraper-entrypoint
+#   labels:
+#     app: scraper-deployment
+# spec:
+#   type: NodePort
+#   selector:
+#     app: scraper-deployment
+#   ports:
+#   - name: http
+#     port: 5000
+#     targetPort: 5000
+#     nodePort: 30001
