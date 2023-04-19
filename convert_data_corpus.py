@@ -13,7 +13,7 @@ import time
 # service = api.read_namespaced_service(name="mongo-nodeport-svc", namespace='default')
 # ipMongodb = service.spec.cluster_ip
 
-CONNECTION_STRING = "mongodb://elliot:erindiane@129.114.26.125:8080"
+CONNECTION_STRING = "mongodb://elliot:erindiane@10.96.76.214:27017"
 
 # Create a connection using MongoClient. You can import MongoClient or use pymongo.MongoClient
 client = MongoClient(CONNECTION_STRING)
@@ -26,7 +26,7 @@ chatbot = ChatBot(
     'My Chatterbot',
     storage_adapter='chatterbot.storage.MongoDatabaseAdapter',
     #database_uri='mongodb://elliot:erindiane@' + ipMongodb + ":27017/training?authSource=admin",
-    database_uri='mongodb://elliot:erindiane@129.114.26.125:8080/training?authSource=admin',
+    database_uri='mongodb://elliot:erindiane@10.96.76.214:27017/training?authSource=admin',
     logic_adapters=[{
         'import_path': 'chatterbot.logic.BestMatch',
         'default_response': 'I am sorry, but I do not understand.',
@@ -83,7 +83,7 @@ with open(r'/home/cc/VanderbiltDiningChatbot/training_data.yaml', 'w+') as file:
 
 trainer = ChatterBotCorpusTrainer(chatbot)
 trainer.train(
-    "training_data.yaml"
+    "/home/cc/VanderbiltDiningChatbot/training_data.yaml"
 )
 #
 #
