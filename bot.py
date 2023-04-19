@@ -1,9 +1,10 @@
 from flask import Flask, render_template, request
-# import spacy
-from chatterbot import ChatBot
-from chatterbot.trainers import ListTrainer
-from chatterbot.trainers import ChatterBotCorpusTrainer
-
+import random
+import string
+from pymongo import MongoClient
+# from chatterbot import ChatBot
+# from chatterbot.trainers import ListTrainer
+# from chatterbot.trainers import ChatterBotCorpusTrainer
 
 # spacy.load("en")
 app = Flask(__name__)
@@ -46,17 +47,65 @@ chatbot = ChatBot(
 #     else:
 #         print(f"{chatbot.get_response(query)}")
 
+s = string.ascii_uppercase + '0123456789'
+chat_id = ''.join(random.choice(s) for i in range(20))
+
+
 # Browser
-#define app routes
+# define app routes
 @app.route("/")
 def index():
-    return render_template("chatbot.html")
+    global chat_id
+    return render_template("chatbot.html", id=chat_id)
+
+
+CONNECTION = "mongodb://elliot:erindiane@129.114.26.125:8080"
+client = MongoClient(CONNECTION)
+db = client["history"]
+col = db[chat_id]
+
 
 @app.route("/get")
-#function for the bot response
+# function for the bot response
 def get_bot_response():
-    userText = request.args.get('msg')
-    return str(chatbot.get_response(userText))
+    global chat_id
+    global CONNECTION
+    global client
+    global db
+    global col
+    chat_data = dict()
+    user_text = "" + request.args.get('msg')
+    response = str(chatbot.get_response(user_text))
+    chat_data["user"] = user_text
+    chat_data["bot"] = response
+    print(chat_data)
+    col.insert_one(chat_data)
+    return response
+
+
+@app.route("/lookup.html")
+def lookup():
+    return render_template("lookup.html")
+
+
+@app.route("/id")
+def get_chat_convo():
+    global CONNECTION
+    global client
+    global db
+    global col
+    user_input_id = request.args.get('msg')
+    col = db[user_input_id]
+    cursor = col.find({}, {'_id': False})
+    chat_data = []
+    count = 0
+    for x in cursor:
+        obj = f"'{count}': {str(x)}"
+        chat_data.append(obj)
+        count += 1
+    chat_data = '{' + str(chat_data)[1:-1] + '}'
+    return chat_data
+
 
 if __name__ == "__main__":
     # app.run()
