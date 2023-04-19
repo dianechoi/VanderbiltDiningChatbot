@@ -39,14 +39,14 @@ chatbot = ChatBot(
 
 
 
-corpus = []
+corpus = dict()
 
 dict_file = [{'sports' : ['soccer', 'football', 'basketball', 'cricket', 'hockey', 'table tennis']},
 {'countries' : ['Pakistan', 'USA', 'India', 'China', 'Germany', 'France', 'Spain']}]
 
 temp = ["food", "dining halls"]
 tempDict = {"categories":temp}
-corpus.append(tempDict)
+corpus["categories"] = temp
 
 temp = []
 
@@ -74,7 +74,8 @@ for option in temp_dining_halls:
     temp.append(qa)
 
 tempDict = {"conversations":temp}
-corpus.append(tempDict)
+#corpus.append(tempDict)
+corpus["conversations"] = temp
 
 with open(r'/home/cc/VanderbiltDiningChatbot/training_data.yaml', 'w+') as file:
     documents = yaml.dump(json.dumps(corpus), file)
