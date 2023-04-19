@@ -45,7 +45,7 @@ def webScrapeAndTrain():
     # Hours
     #driver = webdriver.Chrome(options=set_chrome_options())
 
-    driver = webdriver.Chrome('/app/chromedriver_linux64/chromedriver', options=set_chrome_options())
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=set_chrome_options())
     driver.implicitly_wait(10) # For clearing cookies or something similar in functionality
     driver.get('https://netnutrition.cbord.com/nn-prod/vucampusdining')
 
@@ -192,7 +192,7 @@ def webScrapeAndTrain():
 
     # Menu
     # Start 2301 ------------------------------------------------------------------------------------------------
-    driver = webdriver.Chrome('/app/chromedriver_linux64/chromedriver', options=set_chrome_options())
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=set_chrome_options())
     #driver = webdriver.Chrome('/app/chromedriver_linux64/chromedriver')
     driver.implicitly_wait(10) # For clearing cookies or something similar in functionality
     driver.get('https://netnutrition.cbord.com/nn-prod/vucampusdining')
