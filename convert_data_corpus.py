@@ -9,13 +9,13 @@ import yaml
 import time
 
 
-# config.load_incluster_config()
-# api = client.CoreV1Api()
-# time.sleep(0.1)
-# service = api.read_namespaced_service(name="mongo-nodeport-svc", namespace='default')
-# ipMongodb = service.spec.cluster_ip
+config.load_incluster_config()
+api = client.CoreV1Api()
+time.sleep(0.1)
+service = api.read_namespaced_service(name="mongo-nodeport-svc", namespace='default')
+ipMongodb = service.spec.cluster_ip
 
-CONNECTION_STRING = "mongodb://elliot:erindiane@10.96.76.214:27017"
+CONNECTION_STRING = 'mongodb://elliot:erindiane@' + ipMongodb + ":27017"
 
 # Create a connection using MongoClient. You can import MongoClient or use pymongo.MongoClient
 client = MongoClient(CONNECTION_STRING)
@@ -28,7 +28,7 @@ chatbot = ChatBot(
     'My Chatterbot',
     storage_adapter='chatterbot.storage.MongoDatabaseAdapter',
     #database_uri='mongodb://elliot:erindiane@' + ipMongodb + ":27017/training?authSource=admin",
-    database_uri='mongodb://elliot:erindiane@10.96.76.214:27017/training?authSource=admin',
+    database_uri='mongodb://elliot:erindiane@' + ipMongodb + ":27017/training?authSource=admin", # refresh data each time chatbot is run 
     logic_adapters=[{
         'import_path': 'chatterbot.logic.BestMatch',
         'default_response': 'I am sorry, but I do not understand.',
@@ -88,21 +88,4 @@ trainer = ChatterBotCorpusTrainer(chatbot)
 trainer.train(
     "/home/cc/VanderbiltDiningChatbot/training_data.yaml"
 )
-#
-#
-# # This is added so that many files can reuse the function get_database()
-# if __name__ == "__main__":
-#
-#
-   # CONNECTION_STRING = "mongodb://elliot:erindiane@129.114.26.125:8080"
-   #
-   # # Create a connection using MongoClient. You can import MongoClient or use pymongo.MongoClient
-   # client = MongoClient(CONNECTION_STRING)
-   # db = client["history"]
-#    col = db["OKWVN596MLY525D3IU7H"]
-#    cursor = col.find({})
-#    for x in cursor:
-#       print(x)
-#    print(db.list_collection_names())
-#    print(client.list_database_names())
 
