@@ -17,7 +17,9 @@ CONNECTION_STRING = "mongodb://elliot:erindiane@129.114.26.125:8080"
 
 # Create a connection using MongoClient. You can import MongoClient or use pymongo.MongoClient
 client = MongoClient(CONNECTION_STRING)
-client.drop_database("training")
+dbnames = client.list_database_names()
+if 'training' in dbnames:
+    client.drop_database("training")
 db = client["training"]
 
 chatbot = ChatBot(
