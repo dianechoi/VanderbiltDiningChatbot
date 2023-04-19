@@ -1,3 +1,5 @@
+import json
+
 from pymongo import MongoClient
 from chatterbot import ChatBot
 from chatterbot.trainers import ListTrainer
@@ -75,7 +77,7 @@ tempDict = {"conversations":temp}
 corpus.append(tempDict)
 
 with open(r'/home/cc/VanderbiltDiningChatbot/training_data.yaml', 'w+') as file:
-    documents = yaml.dump(corpus, file)
+    documents = yaml.dump(json.dumps(corpus), file)
 
 
 
