@@ -42,7 +42,7 @@ import yaml
 ### Total: 20
 def webScrapeAndTrain():
     # Hours
-    driver = webdriver.Chrome('/vagrant/Project/chromedriver_linux64/chromedriver')
+    driver = webdriver.Chrome('/app/chromedriver_linux64/chromedriver')
     driver.implicitly_wait(10) # For clearing cookies or something similar in functionality
     driver.get('https://netnutrition.cbord.com/nn-prod/vucampusdining')
 
