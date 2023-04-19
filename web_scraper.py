@@ -1937,9 +1937,9 @@ def webScrapeAndTrain():
 
     dining_halls_corpus = ["2301 breakfast", "2301 daily offerings", "rand breakfast", "rand lunch", "commons breakfast", "commons lunch", "commons dinner", "commons daily offerings", "kissam breakfast", "kissam lunch", "kissam dinner", "kissam daily offerings", "ebi breakfast", "ebi lunch", "ebi dinner", "ebi daily offerings", "roth breakfast", "roth lunch", "roth dinner", "roth daily offerings", "zeppos breakfast", "zeppos lunch", "zeppos dinner", "zeppos daily offerings", "pub", "rand grab & go market", "branscomb munchie", "commons munchie", "highland munchie", "kissam munchie", "local java"]
     for option in dining_halls_corpus:
-        q = "What is" + option + "serving today?"
-        a = option + "is serving the following: "
-        foods = 's, '.join(list(reference[option].keys()))
+        q = "What is " + option + " serving today?"
+        a = option + " is serving the following: "
+        foods = ', '.join(list(reference[option].keys()))
         a += foods
         qa = [q, a]
         temp.append(qa)
