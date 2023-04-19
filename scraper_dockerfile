@@ -6,6 +6,8 @@ RUN pip install chatterbot
 RUN pip install -U spacy==2.1.3
 RUN pip install selenium
 RUN python -m spacy download en
+RUN pip install webdriver-manager
+
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install --no-cache-dir -r requirementspip3.txt
 
