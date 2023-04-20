@@ -56,7 +56,6 @@ chatbot = ChatBot(
 trainer = ChatterBotCorpusTrainer(chatbot)
 trainer.train(
     "/app/greetings_corpus.yml",
-    "/app/dining_corpus.yml"
 )
 
 
@@ -118,7 +117,7 @@ def get_bot_response():
     global client
     global db
     global col
-    timer = 30
+    timer = 60
     chat_data = dict()
     user_text = "" + request.args.get('msg')
     response = str(chatbot.get_response(user_text))
