@@ -185,6 +185,7 @@ def get_bot_response():
     user_text = "" + request.args.get('msg')
     response = str(chatbot.get_response(user_text))
     response = response.replace("\'", '')
+    response = response.replace('\"','')
     chat_data["user"] = user_text
     chat_data["bot"] = response
     print(chat_data)

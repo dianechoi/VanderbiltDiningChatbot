@@ -2034,7 +2034,7 @@ def webScrapeAndTrain():
     for option in dining_halls_corpus:
         menus = reference[option].keys()
         for menu in menus:
-            q = "What are the " + option + " for " + menu + " today?" # What are the Commons lunch ingredients for Smoothies today?
+            q = "What are the " + option + " for " + menu + " today?" # What are the Commons breakfast ingredients for Smoothies today?
             a = option + " for " + menu + " are: " # Commons lunch ingredients for Smoothies are: 
             foods = ', '.join(list(reference.get(option)[menu]))
             a += foods
