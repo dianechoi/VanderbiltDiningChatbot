@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, url_for, request, redirect
 from chatterbot import ChatBot
 from chatterbot import comparisons
 from chatterbot import response_selection
@@ -119,7 +119,7 @@ def get_bot_response():
 
 @app.route("/index.html")
 def home():
-    return render_template("index.html")
+    return redirect(f'http://129.114.26.125:30001', code=302)
 
 
 @app.route("/lookup.html")
