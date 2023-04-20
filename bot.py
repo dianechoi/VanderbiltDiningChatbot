@@ -49,6 +49,8 @@ def keyword_weighted_comparison(statement_a, statement_b):
             if word in statement_a:
                 if word not in statement_b:
                     exact = False
+            else:
+                exact = False
         if exact:
             return 1.0
     return 0.0            
