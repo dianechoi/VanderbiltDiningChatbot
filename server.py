@@ -83,10 +83,15 @@ def lookup():
     return render_template("lookup.html")
 
 
-CONNECTION = "mongodb://elliot:erindiane@129.114.26.125:8080"
-mclient = MongoClient(CONNECTION)
-db = mclient["history"]
+config.load_incluster_config()
+api = client.CoreV1Api()
+time.sleep(0.1)
+service = api.read_namespaced_service(name="mongo-nodeport-svc", namespace='default')
+ipMongodb = service.spec.cluster_ip
 
+CONNECTION = 'mongodb://elliot:erindiane@' + ipMongodb + ":27017"
+mongoClient = MongoClient(CONNECTION)
+db = mongoClient["history"]
 
 @app.route("/id")
 def get_chat_convo():
