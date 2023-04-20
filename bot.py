@@ -27,7 +27,7 @@ scheduler.init_app(app)
 scheduler.start()
 
 i = 0
-timer = 60
+timer = 300
 
 config.load_incluster_config()
 api = client.CoreV1Api()
@@ -35,67 +35,11 @@ time.sleep(0.1)
 service = api.read_namespaced_service(name="mongo-nodeport-svc", namespace='default')
 ipMongodb = service.spec.cluster_ip
 
-print("it's working", file=sys.stdout)
-
-class Comparator:
-
-    def __init__(self, language):
-
-        self.language = language
-
-    def __call__(self, statement_a, statement_b):
-        return self.compare(statement_a, statement_b)
-
-    def compare(self, statement_a, statement_b):
-        return 0
-
-
-class PersonalComparator(Comparator):
-
-    def __init__(self, language):
-
-        super().__init__(language)
-
-    # def __call__(self, statement_a, statement_b):
-    #     return self.compare(statement_a, statement_b)
-
-    def compare(self, statement_a, statement_b):
-        statement_a = str(statement_a).lower()
-        statement_b = str(statement_b).lower()
-        print(statement_a, file=sys.stdout)
-        print(statement_b, file=sys.stdout)
-        dining_halls_corpus = ["2301 breakfast", "2301 Daily Offerings", "rand breakfast", "rand lunch", "commons breakfast", "commons lunch", "commons dinner", "commons Daily Offerings", "kissam breakfast", "kissam lunch", "kissam dinner", "kissam Daily Offerings", "ebi breakfast", "ebi lunch", "ebi dinner", "ebi Daily Offerings", "roth breakfast", "roth lunch", "roth dinner", "roth Daily Offerings", "zeppos breakfast", "Zeppos Lunch", "Zeppos Dinner", "Zeppos Daily Offerings", "The Pub", "Rand Grab & Go Market", "Branscomb Munchie", "Commons Munchie", "Highland Munchie", "Kissam Munchie", "Local Java"]
-        for phrase in dining_halls_corpus:
-            words = phrase.split(' ')
-            exact = True
-            for i in words:
-                word = i.lower()
-                if word in statement_a:
-                    if word not in statement_b:
-                        exact = False
-                else:
-                    exact = False
-            if exact:
-                print('THESE STATEMENTS ABOVE HIT ****************', file=sys.stdout)
-
-                return .99
-        print('THESE STATEMENTS ABOVE FAILED ', file=sys.stdout)
-
-        return 0.0            
-        similarity = LevenshteinDistance().compare(statement_a.text, statement_b.text)
-        
-        return similarity
-
-
-def get_response(input_statement, response_list, storage=None):
-    print(input_statement,file=sys.stdout)
-    print(response_list,file=sys.stdout)
+def response_selector(input_statement, response_list, storage=None):
     statement_d = input_statement
     for statement_c in response_list:
         statement_a = str(statement_d.text).lower()
         statement_b = str(statement_c.text).lower()
-        print(statement_a, file=sys.stdout)
-        print(statement_b, file=sys.stdout)
         dining_halls_corpus = ["2301 breakfast", "2301 Daily Offerings", "rand breakfast", "rand lunch", "commons breakfast", "commons lunch", "commons dinner", "commons Daily Offerings", "kissam breakfast", "kissam lunch", "kissam dinner", "kissam Daily Offerings", "ebi breakfast", "ebi lunch", "ebi dinner", "ebi Daily Offerings", "roth breakfast", "roth lunch", "roth dinner", "roth Daily Offerings", "zeppos breakfast", "Zeppos Lunch", "Zeppos Dinner", "Zeppos Daily Offerings", "The Pub", "Rand Grab & Go Market", "Branscomb Munchie", "Commons Munchie", "Highland Munchie", "Kissam Munchie", "Local Java"]
         for phrase in dining_halls_corpus:
             words = phrase.split(' ')
@@ -108,57 +52,17 @@ def get_response(input_statement, response_list, storage=None):
                 else:
                     exact = False
             if exact:
-                print('THESE STATEMENTS ABOVE HIT ****************', file=sys.stdout)
-
                 return statement_c
-        print('THESE STATEMENTS ABOVE FAILED ', file=sys.stdout)
-
-    return input_statement          
-
+    return "Sorry, I could not understand. Please format your question in the following way: 'What is [Dining Hall] [Breakfast/Lunch/Dinner/Daily Offerings] serving today?'"          
 
 chatbot = ChatBot(
     'My Chatterbot',
     storage_adapter='chatterbot.storage.MongoDatabaseAdapter',
     database_uri='mongodb://elliot:erindiane@' + ipMongodb + ":27017/training?authSource=admin",
-    # refresh data each time chatbot is run
-    # logic_adapters=[{
-    #     'import_path': 'chatterbot.logic.BestMatch',
-    #     'default_response': 'I am sorry, but I do not understand.',
-    #     'statement_comparison_function': keyword_weighted_comparison,
-    #     'response_selection_method': response_selection.get_random_response,
-    #     'maximum_similarity_threshold': 1.0
-    # }
-    # ],
-    response_selection_method=get_response,
+    response_selection_method=response_selector,
     read_only=True  # prevents chatbot from learning from user's input
 )
 
-# # ListTrainer
-# trainer = ListTrainer(chatbot)
-# trainer.train([
-#     "What are the hours for Rand dining hall?",
-#     "The hours for Rand dining hall are 7:00 AM to 3:00 PM Monday-Friday and closed Saturday-Sunday.",
-#     "What food is Rand dining hall serving for lunch today?",
-#     "The various options Rand dining hall serves are: Chef James Bistro, Salad Bar, Bakery, Randwich, Fresh Mex, Soup, Mongolian Grill, Mediterranean, Beverages, Fruit, Alternative Cooler, Condiments, and Self-Serve. Which would you like to see in more detail?"
-# ])
-
-# CorpusTrainer
-trainer = ChatterBotCorpusTrainer(chatbot)
-trainer.train(
-    "/app/greetings_corpus.yml",
-)
-
-
-# # Terminal
-# exit_conditions = (":q", "quit", "exit")
-# while True:
-#     query = input("> ")
-#     if query in exit_conditions:
-#         break
-#     else:
-#         print(f"{chatbot.get_response(query)}")
-
-#@scheduler.task('interval', id='do_job_1', seconds=1, misfire_grace_time=900)
 def job1():
     global timer
     timer -= 1
@@ -177,15 +81,12 @@ def job1():
         service_result = api_service.delete_namespaced_service(name=service_name, namespace='default')
         deployment_result = api_deployment.delete_namespaced_deployment(name=deployment_name, namespace='default')
 
-        # pod_result = api_pod.delete_namespaced_pod(name = pod_name, namespace='default')
-
 
 s = string.ascii_uppercase + '0123456789'
 chat_id = ''.join(random.choice(s) for i in range(20))
 
 
 # Browser
-# define app routes
 @app.route("/")
 def index():
     global chat_id
@@ -199,13 +100,12 @@ col = db[chat_id]
 
 
 @app.route("/get")
-# function for the bot response
 def get_bot_response():
     global timer
     global chat_id
     global db
     global col
-    timer = 60
+    timer = 300
     chat_data = dict()
     user_text = "" + request.args.get('msg')
     response = str(chatbot.get_response(user_text))

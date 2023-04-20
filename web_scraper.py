@@ -1893,8 +1893,6 @@ def webScrapeAndTrain():
         read_only=True # prevents chatbot from learning from user's input
     )
 
-
-
     corpus = dict()
     temp = ["food", "dining halls"]
     corpus["categories"] = temp
@@ -1954,6 +1952,7 @@ def webScrapeAndTrain():
     trainer = ChatterBotCorpusTrainer(chatbot)
     trainer.train(
         "/app/training_data.yaml"
+        "/app/greetings_corpus.yml"
     )
 
 def set_chrome_options() -> Options:
