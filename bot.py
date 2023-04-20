@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request
 from chatterbot import ChatBot
+from chatterbot import comparisons
+from chatterbot import response_selection
 from chatterbot.trainers import ListTrainer
 from chatterbot.trainers import ChatterBotCorpusTrainer
 from kubernetes import client, config
@@ -39,7 +41,9 @@ chatbot = ChatBot(
     # refresh data each time chatbot is run
     logic_adapters=[{
         'import_path': 'chatterbot.logic.BestMatch',
-        'default_response': 'I am sorry, but I do not understand.'
+        'default_response': 'I am sorry, but I do not understand.',
+        'statement_comparison_function': comparisons.LevenshteinDistance,
+        'response_selection_method': response_selection.get_first_response
     }
     ],
     read_only=True  # prevents chatbot from learning from user's input
