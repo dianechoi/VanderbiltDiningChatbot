@@ -62,7 +62,8 @@ class PersonalComparator(Comparator):
     def compare(self, statement_a, statement_b):
         statement_a = str(statement_a).lower()
         statement_b = str(statement_b).lower()
-
+        print(statement_a, file=sys.stdout)
+        print(statement_b, file=sys.stdout)
         dining_halls_corpus = ["2301 breakfast", "2301 Daily Offerings", "rand breakfast", "rand lunch", "commons breakfast", "commons lunch", "commons dinner", "commons Daily Offerings", "kissam breakfast", "kissam lunch", "kissam dinner", "kissam Daily Offerings", "ebi breakfast", "ebi lunch", "ebi dinner", "ebi Daily Offerings", "roth breakfast", "roth lunch", "roth dinner", "roth Daily Offerings", "zeppos breakfast", "Zeppos Lunch", "Zeppos Dinner", "Zeppos Daily Offerings", "The Pub", "Rand Grab & Go Market", "Branscomb Munchie", "Commons Munchie", "Highland Munchie", "Kissam Munchie", "Local Java"]
         for phrase in dining_halls_corpus:
             words = phrase.split(' ')
@@ -75,9 +76,11 @@ class PersonalComparator(Comparator):
                 else:
                     exact = False
             if exact:
-                print(statement_a, file=sys.stdout)
-                print(statement_b, file=sys.stdout)
+                print('THESE STATEMENTS ABOVE HIT ****************', file=sys.stdout)
+
                 return 1.0
+        print('THESE STATEMENTS ABOVE FAILED ', file=sys.stdout)
+
         return 0.0            
         similarity = LevenshteinDistance().compare(statement_a.text, statement_b.text)
         
