@@ -117,6 +117,11 @@ def get_bot_response():
     return response
 
 
+@app.route("/index.html")
+def home():
+    return render_template("index.html")
+
+
 @app.route("/lookup.html")
 def lookup():
     return render_template("lookup.html")
