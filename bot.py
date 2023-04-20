@@ -47,6 +47,19 @@ class Comparator:
         return self.compare(statement_a, statement_b)
 
     def compare(self, statement_a, statement_b):
+        return 0
+
+
+class PersonalComparator(Comparator):
+
+    def __init__(self, language):
+
+        super().__init__(language)
+
+    # def __call__(self, statement_a, statement_b):
+    #     return self.compare(statement_a, statement_b)
+
+    def compare(self, statement_a, statement_b):
         statement_a = str(statement_a).lower()
         statement_b = str(statement_b).lower()
         print(statement_a, file=sys.stdout)
@@ -82,7 +95,7 @@ chatbot = ChatBot(
     #     'maximum_similarity_threshold': 1.0
     # }
     # ],
-    statement_comparison_function=Comparator.compare,
+    statement_comparison_function=PersonalComparator,
     read_only=True  # prevents chatbot from learning from user's input
 )
 
