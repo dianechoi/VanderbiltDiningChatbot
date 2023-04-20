@@ -36,9 +36,12 @@
 		function getConvo() {
 			let userText = $("#textInput").val();
 			$.get("/id", { msg: userText }).done(function(data) {
+				console.log(data);
 				data = data.replace(/"/g, '');
 				data = data.replace(/'/g, '"');
+				console.log(data);
 				var chat_data = JSON.parse(data);
+				console.log(chat_data);
 				var len = Object.keys(chat_data).length;
 				for (let i = 0; i < len; i++) {
 					userMsg = chat_data[i]["user"];
