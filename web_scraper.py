@@ -1812,7 +1812,7 @@ def webScrapeAndTrain():
     # End Kissam Munchie ----------------------------------------------------------------------------------------
 
 
-    # Start Local Java Munchie -----------------------------------------------------------------------------------
+    # Start Local Java --------------------------------------------------------------------------------------
     # Daily Offerings
     driver.delete_all_cookies()
     driver.implicitly_wait(10) # For clearing cookies or something similar in functionality
@@ -1860,10 +1860,10 @@ def webScrapeAndTrain():
             # Add to list of menu items
             local_java_daily_offerings_menu_items_list.append(item_text)
     local_java_daily_offerings_dict[menu_text] = local_java_daily_offerings_menu_items_list
-    print("Local Java Munchie Daily Offerings: ") #
+    print("Local Java Daily Offerings: ") #
     print(local_java_daily_offerings_dict) #
     print("\n")
-    # End Local Java Munchie -------------------------------------------------------------------------------------
+    # End Local Java ----------------------------------------------------------------------------------------
 
     config.load_incluster_config()
     api = client.CoreV1Api()
@@ -1900,30 +1900,30 @@ def webScrapeAndTrain():
 
     reference = {
         "2301 breakfast": breakfast_2301_dict,
-        "2301 Daily Offerings": daily_offerings_2301_dict,
-        "rand breakfast": rand_breakfast_dict,
-        "rand lunch": rand_lunch_dict,
-        "commons breakfast": commons_breakfast_dict,
-        "commons lunch": commons_lunch_dict,
-        "commons dinner": commons_dinner_dict,
-        "commons Daily Offerings": commons_daily_offerings_dict,
-        "kissam breakfast": kissam_breakfast_dict,
-        "kissam lunch": kissam_lunch_dict,
-        "kissam dinner": kissam_dinner_dict,
-        "kissam Daily Offerings": kissam_daily_offerings_dict,
-        "ebi breakfast": ebi_breakfast_dict,
-        "ebi lunch": ebi_lunch_dict,
-        "ebi dinner": ebi_dinner_dict,
-        "ebi Daily Offerings": ebi_daily_offerings_dict,
-        "roth breakfast": roth_breakfast_dict,
-        "roth lunch": roth_lunch_dict,
-        "roth dinner": roth_dinner_dict,
-        "roth Daily Offerings": roth_daily_offerings_dict,
+        "2301 daily offerings": daily_offerings_2301_dict,
+        "Rand breakfast": rand_breakfast_dict,
+        "Rand lunch": rand_lunch_dict,
+        "Commons breakfast": commons_breakfast_dict,
+        "Commons lunch": commons_lunch_dict,
+        "Commons dinner": commons_dinner_dict,
+        "Commons daily offerings": commons_daily_offerings_dict,
+        "Kissam breakfast": kissam_breakfast_dict,
+        "Kissam lunch": kissam_lunch_dict,
+        "Kissam dinner": kissam_dinner_dict,
+        "Kissam daily offerings": kissam_daily_offerings_dict,
+        "EBI breakfast": ebi_breakfast_dict,
+        "EBI lunch": ebi_lunch_dict,
+        "EBI dinner": ebi_dinner_dict,
+        "EBI daily offerings": ebi_daily_offerings_dict,
+        "Rothschild breakfast": roth_breakfast_dict,
+        "Rothschild lunch": roth_lunch_dict,
+        "Rothschild dinner": roth_dinner_dict,
+        "Rothschild daily offerings": roth_daily_offerings_dict,
         "The Pub": pub_daily_offerings_dict,
-        "Zeppos Breakfast": zeppos_breakfast_dict,
-        "Zeppos Lunch": zeppos_lunch_dict,
-        "Zeppos Dinner": zeppos_dinner_dict,
-        "Zeppos Daily Offerings": zeppos_daily_offerings_dict,
+        "Zeppos breakfast": zeppos_breakfast_dict,
+        "Zeppos lunch": zeppos_lunch_dict,
+        "Zeppos dinner": zeppos_dinner_dict,
+        "Zeppos daily offerings": zeppos_daily_offerings_dict,
         "Rand Grab & Go Market": rand_gg_daily_offerings_dict,
         "Branscomb Munchie": branscomb_munchie_daily_offerings_dict,
         "Commons Munchie": commons_munchie_daily_offerings_dict,
@@ -1933,7 +1933,7 @@ def webScrapeAndTrain():
     }
 
 
-    dining_halls_corpus = ["2301 breakfast", "2301 Daily Offerings", "rand breakfast", "rand lunch", "commons breakfast", "commons lunch", "commons dinner", "commons Daily Offerings", "kissam breakfast", "kissam lunch", "kissam dinner", "kissam Daily Offerings", "ebi breakfast", "ebi lunch", "ebi dinner", "ebi Daily Offerings", "roth breakfast", "roth lunch", "roth dinner", "roth Daily Offerings", "zeppos breakfast", "Zeppos Lunch", "Zeppos Dinner", "Zeppos Daily Offerings", "The Pub", "Rand Grab & Go Market", "Branscomb Munchie", "Commons Munchie", "Highland Munchie", "Kissam Munchie", "Local Java"]
+    dining_halls_corpus = ["2301 breakfast", "2301 daily offerings", "Rand breakfast", "Rand lunch", "Commons breakfast", "Commons lunch", "Commons dinner", "Commons daily offerings", "Kissam breakfast", "Kissam lunch", "Kissam dinner", "Kissam daily offerings", "EBI breakfast", "EBI lunch", "EBI dinner", "EBI daily offerings", "Rothschild breakfast", "Rothschild lunch", "Rothschild dinner", "Rothschild daily offerings", "Zeppos breakfast", "Zeppos lunch", "Zeppos dinner", "Zeppos daily offerings", "The Pub", "Rand Grab & Go Market", "Branscomb Munchie", "Commons Munchie", "Highland Munchie", "Kissam Munchie", "Local Java"]
     for option in dining_halls_corpus:
         q = "What is " + option + " serving today?"
         a = option + " is serving the following: "
@@ -1946,8 +1946,6 @@ def webScrapeAndTrain():
 
     with open(r'/app/training_data.yaml', 'w+') as file:
         documents = yaml.dump(corpus, file)
-
-
 
     trainer = ChatterBotCorpusTrainer(chatbot)
     trainer.train(
