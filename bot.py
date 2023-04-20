@@ -86,6 +86,37 @@ class PersonalComparator(Comparator):
         
         return similarity
 
+
+def get_response(input_statement, response_list, storage=None):
+    statement_a = input_statement
+    for statement_b in response_list:
+        statement_a = str(statement_a).lower()
+        statement_b = str(statement_b).lower()
+        print(statement_a, file=sys.stdout)
+        print(statement_b, file=sys.stdout)
+        dining_halls_corpus = ["2301 breakfast", "2301 Daily Offerings", "rand breakfast", "rand lunch", "commons breakfast", "commons lunch", "commons dinner", "commons Daily Offerings", "kissam breakfast", "kissam lunch", "kissam dinner", "kissam Daily Offerings", "ebi breakfast", "ebi lunch", "ebi dinner", "ebi Daily Offerings", "roth breakfast", "roth lunch", "roth dinner", "roth Daily Offerings", "zeppos breakfast", "Zeppos Lunch", "Zeppos Dinner", "Zeppos Daily Offerings", "The Pub", "Rand Grab & Go Market", "Branscomb Munchie", "Commons Munchie", "Highland Munchie", "Kissam Munchie", "Local Java"]
+        for phrase in dining_halls_corpus:
+            words = phrase.split(' ')
+            exact = True
+            for i in words:
+                word = i.lower()
+                if word in statement_a:
+                    if word not in statement_b:
+                        exact = False
+                else:
+                    exact = False
+            if exact:
+                print('THESE STATEMENTS ABOVE HIT ****************', file=sys.stdout)
+
+                return statement_b
+        print('THESE STATEMENTS ABOVE FAILED ', file=sys.stdout)
+
+        return "idk"            
+        similarity = LevenshteinDistance().compare(statement_a.text, statement_b.text)
+        
+        return similarity
+
+
 chatbot = ChatBot(
     'My Chatterbot',
     storage_adapter='chatterbot.storage.MongoDatabaseAdapter',
@@ -99,8 +130,7 @@ chatbot = ChatBot(
     #     'maximum_similarity_threshold': 1.0
     # }
     # ],
-    statement_comparison_function=PersonalComparator,
-    maximum_similarity_threshold=0.8,
+    response_selection_method=get_response,
     read_only=True  # prevents chatbot from learning from user's input
 )
 
