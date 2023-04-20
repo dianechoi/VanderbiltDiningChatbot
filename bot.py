@@ -43,7 +43,8 @@ chatbot = ChatBot(
         'import_path': 'chatterbot.logic.BestMatch',
         'default_response': 'I am sorry, but I do not understand.',
         'statement_comparison_function': comparisons.LevenshteinDistance,
-        'response_selection_method': response_selection.get_first_response
+        'response_selection_method': response_selection.get_first_response,
+        'maximum_similarity_threshold': 1.0
     }
     ],
     read_only=True  # prevents chatbot from learning from user's input
