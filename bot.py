@@ -65,14 +65,15 @@ chatbot = ChatBot(
     storage_adapter='chatterbot.storage.MongoDatabaseAdapter',
     database_uri='mongodb://elliot:erindiane@' + ipMongodb + ":27017/training?authSource=admin",
     # refresh data each time chatbot is run
-    logic_adapters=[{
-        'import_path': 'chatterbot.logic.BestMatch',
-        'default_response': 'I am sorry, but I do not understand.',
-        'statement_comparison_function': keyword_weighted_comparison,
-        'response_selection_method': response_selection.get_random_response,
-        'maximum_similarity_threshold': 1.0
-    }
-    ],
+    # logic_adapters=[{
+    #     'import_path': 'chatterbot.logic.BestMatch',
+    #     'default_response': 'I am sorry, but I do not understand.',
+    #     'statement_comparison_function': keyword_weighted_comparison,
+    #     'response_selection_method': response_selection.get_random_response,
+    #     'maximum_similarity_threshold': 1.0
+    # }
+    # ],
+    statement_comparison_function=keyword_weighted_comparison,
     read_only=True  # prevents chatbot from learning from user's input
 )
 
