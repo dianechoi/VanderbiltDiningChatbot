@@ -37,28 +37,37 @@ ipMongodb = service.spec.cluster_ip
 
 print("it's working", file=sys.stdout)
 
-def keyword_weighted_comparison(statement_a, statement_b):
-    statement_a = str(statement_a).lower()
-    statement_b = str(statement_b).lower()
-    print(statement_a, file=sys.stdout)
-    print(statement_b, file=sys.stdout)
-    dining_halls_corpus = ["2301 breakfast", "2301 Daily Offerings", "rand breakfast", "rand lunch", "commons breakfast", "commons lunch", "commons dinner", "commons Daily Offerings", "kissam breakfast", "kissam lunch", "kissam dinner", "kissam Daily Offerings", "ebi breakfast", "ebi lunch", "ebi dinner", "ebi Daily Offerings", "roth breakfast", "roth lunch", "roth dinner", "roth Daily Offerings", "zeppos breakfast", "Zeppos Lunch", "Zeppos Dinner", "Zeppos Daily Offerings", "The Pub", "Rand Grab & Go Market", "Branscomb Munchie", "Commons Munchie", "Highland Munchie", "Kissam Munchie", "Local Java"]
-    for phrase in dining_halls_corpus:
-        words = phrase.split(' ')
-        exact = True
-        for i in words:
-            word = i.lower()
-            if word in statement_a:
-                if word not in statement_b:
+class Comparator:
+
+    def __init__(self, language):
+
+        self.language = language
+
+    def __call__(self, statement_a, statement_b):
+        return self.compare(statement_a, statement_b)
+
+    def compare(self, statement_a, statement_b):
+        statement_a = str(statement_a).lower()
+        statement_b = str(statement_b).lower()
+        print(statement_a, file=sys.stdout)
+        print(statement_b, file=sys.stdout)
+        dining_halls_corpus = ["2301 breakfast", "2301 Daily Offerings", "rand breakfast", "rand lunch", "commons breakfast", "commons lunch", "commons dinner", "commons Daily Offerings", "kissam breakfast", "kissam lunch", "kissam dinner", "kissam Daily Offerings", "ebi breakfast", "ebi lunch", "ebi dinner", "ebi Daily Offerings", "roth breakfast", "roth lunch", "roth dinner", "roth Daily Offerings", "zeppos breakfast", "Zeppos Lunch", "Zeppos Dinner", "Zeppos Daily Offerings", "The Pub", "Rand Grab & Go Market", "Branscomb Munchie", "Commons Munchie", "Highland Munchie", "Kissam Munchie", "Local Java"]
+        for phrase in dining_halls_corpus:
+            words = phrase.split(' ')
+            exact = True
+            for i in words:
+                word = i.lower()
+                if word in statement_a:
+                    if word not in statement_b:
+                        exact = False
+                else:
                     exact = False
-            else:
-                exact = False
-        if exact:
-            return 1.0
-    return 0.0            
-    similarity = LevenshteinDistance().compare(statement_a.text, statement_b.text)
-    
-    return similarity
+            if exact:
+                return 1.0
+        return 0.0            
+        similarity = LevenshteinDistance().compare(statement_a.text, statement_b.text)
+        
+        return similarity
 
 chatbot = ChatBot(
     'My Chatterbot',
@@ -73,7 +82,7 @@ chatbot = ChatBot(
     #     'maximum_similarity_threshold': 1.0
     # }
     # ],
-    statement_comparison_function=keyword_weighted_comparison,
+    statement_comparison_function=Comparator.compare,
     read_only=True  # prevents chatbot from learning from user's input
 )
 
