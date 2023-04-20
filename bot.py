@@ -131,10 +131,9 @@ def lookup():
 def get_chat_convo():
     global CONNECTION
     global db
-    global col
     user_input_id = request.args.get('msg')
-    col = db[user_input_id]
-    cursor = col.find({}, {'_id': False})
+    getCol = db[user_input_id]
+    cursor = getCol.find({}, {'_id': False})
     chat_data = []
     count = 0
     for x in cursor:
