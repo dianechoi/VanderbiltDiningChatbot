@@ -1,6 +1,7 @@
 from flask import Flask, render_template, url_for, request, redirect
 from kubernetes import client, config
 import time
+from pymongo import MongoClient
 
 app = Flask(__name__)
 i = 0
@@ -74,8 +75,35 @@ def my_link():
     for port in service.spec.ports:
         return redirect(f'http://129.114.26.125:{port.node_port}', code=302)
 
-
     return "Something went wrong. Please try again!"
+
+
+@app.route("/lookup.html")
+def lookup():
+    return render_template("lookup.html")
+
+
+CONNECTION = "mongodb://elliot:erindiane@129.114.26.125:8080"
+mclient = MongoClient(CONNECTION)
+db = mclient["history"]
+
+
+@app.route("/id")
+def get_chat_convo():
+    global CONNECTION
+    global mclient
+    global db
+    user_input_id = request.args.get('msg')
+    col = db[user_input_id]
+    cursor = col.find({}, {'_id': False})
+    chat_data = []
+    count = 0
+    for x in cursor:
+        obj = f"'{count}': {str(x)}"
+        chat_data.append(obj)
+        count += 1
+    chat_data = '{' + str(chat_data)[1:-1] + '}'
+    return chat_data
 
 
 if __name__ == '__main__':
