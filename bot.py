@@ -100,6 +100,7 @@ chatbot = ChatBot(
     # }
     # ],
     statement_comparison_function=PersonalComparator,
+    threshold=0.8
     read_only=True  # prevents chatbot from learning from user's input
 )
 
