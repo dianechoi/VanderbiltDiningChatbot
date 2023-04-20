@@ -1950,7 +1950,6 @@ def webScrapeAndTrain():
     trainer = ChatterBotCorpusTrainer(chatbot)
     trainer.train(
         "/app/training_data.yaml",
-        "/app/greetings_corpus.yml"
     )
 
 def set_chrome_options() -> Options:
