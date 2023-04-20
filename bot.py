@@ -1,3 +1,4 @@
+import copy
 from flask import Flask, render_template, url_for, request, redirect
 from chatterbot import ChatBot
 from chatterbot import comparisons
@@ -38,15 +39,15 @@ ipMongodb = service.spec.cluster_ip
 def response_selector(input_statement, response_list, storage=None):
     statement_d = input_statement
     for statement_c in response_list:
-        statement_a = str(statement_d.text).lower()
-        statement_b = str(statement_c.text).lower()
+        statement_a = str(copy.deepcopy(statement_d.text)).lower()
+        statement_b = str(copy.deepcopy(statement_c.text)).lower()
         dining_halls_corpus = ["2301 breakfast", "2301 Daily Offerings", "rand breakfast", "rand lunch", "commons breakfast", "commons lunch", "commons dinner", "commons Daily Offerings", "kissam breakfast", "kissam lunch", "kissam dinner", "kissam Daily Offerings", "ebi breakfast", "ebi lunch", "ebi dinner", "ebi Daily Offerings", "roth breakfast", "roth lunch", "roth dinner", "roth Daily Offerings", "zeppos breakfast", "Zeppos Lunch", "Zeppos Dinner", "Zeppos Daily Offerings", "The Pub", "Rand Grab & Go Market", "Branscomb Munchie", "Commons Munchie", "Highland Munchie", "Kissam Munchie", "Local Java"]
         for phrase in dining_halls_corpus:
             words = phrase.split(' ')
             exact = True
             for i in words:
                 word = i.lower()
-                if word.lower() in statement_a.lower():
+                if word in statement_a.lower():
                     if word not in statement_b.lower():
                         exact = False
                 else:
