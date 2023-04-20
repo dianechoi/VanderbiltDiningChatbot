@@ -39,7 +39,7 @@ chatbot = ChatBot(
     # refresh data each time chatbot is run
     logic_adapters=[{
         'import_path': 'chatterbot.logic.BestMatch',
-        'default_response': 'I am sorry, but I do not understand.',
+        'default_response': 'I am sorry, but I do not understand.'
     }
     ],
     read_only=True  # prevents chatbot from learning from user's input
