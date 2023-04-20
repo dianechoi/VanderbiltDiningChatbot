@@ -7,6 +7,7 @@ from chatterbot.trainers import ChatterBotCorpusTrainer
 from kubernetes import client, config
 from flask_apscheduler import APScheduler
 from apscheduler.schedulers.background import BackgroundScheduler
+from chatterbot.comparisons import LevenshteinDistance
 
 from pymongo import MongoClient
 import time
@@ -34,6 +35,23 @@ time.sleep(0.1)
 service = api.read_namespaced_service(name="mongo-nodeport-svc", namespace='default')
 ipMongodb = service.spec.cluster_ip
 
+
+def keyword_weighted_comparison(statement_a, statement_b):
+    dining_halls_corpus = ["2301 breakfast", "2301 Daily Offerings", "rand breakfast", "rand lunch", "commons breakfast", "commons lunch", "commons dinner", "commons Daily Offerings", "kissam breakfast", "kissam lunch", "kissam dinner", "kissam Daily Offerings", "ebi breakfast", "ebi lunch", "ebi dinner", "ebi Daily Offerings", "roth breakfast", "roth lunch", "roth dinner", "roth Daily Offerings", "zeppos breakfast", "Zeppos Lunch", "Zeppos Dinner", "Zeppos Daily Offerings", "The Pub", "Rand Grab & Go Market", "Branscomb Munchie", "Commons Munchie", "Highland Munchie", "Kissam Munchie", "Local Java"]
+    for phrase in dining_halls_corpus:
+        words = phrase.split(' ')
+        exact = True
+        for i in words:
+            if i in statement_a:
+                if i not in statement_b:
+                    exact = False
+        if exact:
+            return 1.0
+    return 0.0            
+    similarity = LevenshteinDistance().compare(statement_a.text, statement_b.text)
+    
+    return similarity
+
 chatbot = ChatBot(
     'My Chatterbot',
     storage_adapter='chatterbot.storage.MongoDatabaseAdapter',
@@ -42,7 +60,7 @@ chatbot = ChatBot(
     logic_adapters=[{
         'import_path': 'chatterbot.logic.BestMatch',
         'default_response': 'I am sorry, but I do not understand.',
-        'statement_comparison_function': comparisons.LevenshteinDistance,
+        'statement_comparison_function': keyword_weighted_comparison,
         'response_selection_method': response_selection.get_first_response,
         'maximum_similarity_threshold': 1.0
     }
