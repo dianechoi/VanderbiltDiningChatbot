@@ -12,6 +12,11 @@ def index():
     return render_template('index.html', name="")
 
 
+@app.route('/index.html')
+def home():
+    return render_template('index.html', name='')
+
+
 @app.route('/my-link/')
 def my_link():
     global i

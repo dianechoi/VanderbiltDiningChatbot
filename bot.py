@@ -84,7 +84,7 @@ def job1():
 
 
 s = string.ascii_uppercase + '0123456789'
-chat_id = ''.join(random.choice(s) for i in range(20))
+chat_id = 'A' + ''.join(random.choice(s) for i in range(20))
 
 
 # Browser
