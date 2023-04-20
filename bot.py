@@ -46,8 +46,8 @@ def response_selector(input_statement, response_list, storage=None):
             exact = True
             for i in words:
                 word = i.lower()
-                if word in statement_a:
-                    if word not in statement_b:
+                if word.lower() in statement_a.lower():
+                    if word not in statement_b.lower():
                         exact = False
                 else:
                     exact = False
