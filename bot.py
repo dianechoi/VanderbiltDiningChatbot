@@ -88,8 +88,8 @@ class PersonalComparator(Comparator):
 
 
 def get_response(input_statement, response_list, storage=None):
-    print(input_statement)
-    print(response_list)
+    print(input_statement,file=sys.stdout)
+    print(response_list,file=sys.stdout)
     statement_d = input_statement
     for statement_c in response_list:
         statement_a = str(statement_d.text).lower()
