@@ -78,7 +78,7 @@ class PersonalComparator(Comparator):
             if exact:
                 print('THESE STATEMENTS ABOVE HIT ****************', file=sys.stdout)
 
-                return 1.0
+                return .99
         print('THESE STATEMENTS ABOVE FAILED ', file=sys.stdout)
 
         return 0.0            
@@ -100,7 +100,7 @@ chatbot = ChatBot(
     # }
     # ],
     statement_comparison_function=PersonalComparator,
-    threshold=0.8,
+    maximum_similarity_threshold=0.8,
     read_only=True  # prevents chatbot from learning from user's input
 )
 
