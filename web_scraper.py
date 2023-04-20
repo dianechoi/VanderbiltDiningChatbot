@@ -2074,7 +2074,7 @@ def webScrapeAndTrain():
         q = "What are the hours for " + option + "?" # What are the hours for 2301?
         a = "The hours for " + option + " are: "  # The hours for 2301 are: 
         hours_return = reference[option]
-        a += hours_return
+        a += ''.join(hours_return)
         qa = [q, a]
         temp.append(qa)
 
