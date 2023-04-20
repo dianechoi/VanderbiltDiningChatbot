@@ -1,9 +1,13 @@
 from flask import Flask, render_template, request
 from chatterbot import ChatBot
+from chatterbot import comparisons
+from chatterbot import response_selection
 from chatterbot.trainers import ListTrainer
 from chatterbot.trainers import ChatterBotCorpusTrainer
 from kubernetes import client, config
 from flask_apscheduler import APScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
+
 from pymongo import MongoClient
 import time
 import random
@@ -22,7 +26,7 @@ scheduler.init_app(app)
 scheduler.start()
 
 i = 0
-timer = 30
+timer = 60
 
 config.load_incluster_config()
 api = client.CoreV1Api()
@@ -38,6 +42,8 @@ chatbot = ChatBot(
     logic_adapters=[{
         'import_path': 'chatterbot.logic.BestMatch',
         'default_response': 'I am sorry, but I do not understand.',
+        'statement_comparison_function': comparisons.LevenshteinDistance,
+        'response_selection_method': response_selection.get_first_response
     }
     ],
     read_only=True  # prevents chatbot from learning from user's input
@@ -56,7 +62,6 @@ chatbot = ChatBot(
 trainer = ChatterBotCorpusTrainer(chatbot)
 trainer.train(
     "/app/greetings_corpus.yml",
-    "/app/dining_corpus.yml"
 )
 
 
@@ -69,7 +74,7 @@ trainer.train(
 #     else:
 #         print(f"{chatbot.get_response(query)}")
 
-@scheduler.task('interval', id='do_job_1', seconds=1, misfire_grace_time=900)
+#@scheduler.task('interval', id='do_job_1', seconds=1, misfire_grace_time=900)
 def job1():
     global timer
     timer -= 1
@@ -103,9 +108,9 @@ def index():
     return render_template("chatbot.html", id=chat_id)
 
 
-CONNECTION = "mongodb://elliot:erindiane@129.114.26.125:8080"
-client = MongoClient(CONNECTION)
-db = client["history"]
+CONNECTION = 'mongodb://elliot:erindiane@' + ipMongodb + ":27017"
+mongoClient = MongoClient(CONNECTION)
+db = mongoClient["history"]
 col = db[chat_id]
 
 
@@ -114,11 +119,9 @@ col = db[chat_id]
 def get_bot_response():
     global timer
     global chat_id
-    global CONNECTION
-    global client
     global db
     global col
-    timer = 30
+    timer = 60
     chat_data = dict()
     user_text = "" + request.args.get('msg')
     response = str(chatbot.get_response(user_text))
@@ -137,7 +140,6 @@ def lookup():
 @app.route("/id")
 def get_chat_convo():
     global CONNECTION
-    global client
     global db
     global col
     user_input_id = request.args.get('msg')
@@ -154,5 +156,9 @@ def get_chat_convo():
 
 
 if __name__ == "__main__":
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(func=job1, trigger="interval", seconds=2)
+    scheduler.start()
+
     # app.run()
     app.run(debug=True, host='0.0.0.0')

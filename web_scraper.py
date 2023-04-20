@@ -2,6 +2,7 @@
 # from bs4 import BeautifulSoup
 import time
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
@@ -42,7 +43,9 @@ import yaml
 ### Total: 20
 def webScrapeAndTrain():
     # Hours
-    driver = webdriver.Chrome('/vagrant/Project/chromedriver_linux64/chromedriver')
+    #driver = webdriver.Chrome(options=set_chrome_options())
+
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=set_chrome_options())
     driver.implicitly_wait(10) # For clearing cookies or something similar in functionality
     driver.get('https://netnutrition.cbord.com/nn-prod/vucampusdining')
 
@@ -189,7 +192,8 @@ def webScrapeAndTrain():
 
     # Menu
     # Start 2301 ------------------------------------------------------------------------------------------------
-    driver = webdriver.Chrome('/vagrant/Project/chromedriver_linux64/chromedriver')
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=set_chrome_options())
+    #driver = webdriver.Chrome('/app/chromedriver_linux64/chromedriver')
     driver.implicitly_wait(10) # For clearing cookies or something similar in functionality
     driver.get('https://netnutrition.cbord.com/nn-prod/vucampusdining')
 
@@ -1870,11 +1874,11 @@ def webScrapeAndTrain():
     CONNECTION_STRING = 'mongodb://elliot:erindiane@' + ipMongodb + ":27017"
 
     # Create a connection using MongoClient. You can import MongoClient or use pymongo.MongoClient
-    client = MongoClient(CONNECTION_STRING)
-    dbnames = client.list_database_names()
+    clientMongo = MongoClient(CONNECTION_STRING)
+    dbnames = clientMongo.list_database_names()
     if 'training' in dbnames:
-        client.drop_database("training")
-    db = client["training"]
+        clientMongo.drop_database("training")
+    db = clientMongo["training"]
 
     chatbot = ChatBot(
         'My Chatterbot',
@@ -1898,44 +1902,44 @@ def webScrapeAndTrain():
 
     reference = {
         "2301 breakfast": breakfast_2301_dict,
-        "2301 daily offerings": daily_offerings_2301_dict,
+        "2301 Daily Offerings": daily_offerings_2301_dict,
         "rand breakfast": rand_breakfast_dict,
         "rand lunch": rand_lunch_dict,
         "commons breakfast": commons_breakfast_dict,
         "commons lunch": commons_lunch_dict,
         "commons dinner": commons_dinner_dict,
-        "commons daily offerings": commons_daily_offerings_dict,
+        "commons Daily Offerings": commons_daily_offerings_dict,
         "kissam breakfast": kissam_breakfast_dict,
         "kissam lunch": kissam_lunch_dict,
         "kissam dinner": kissam_dinner_dict,
-        "kissam daily offerings": kissam_daily_offerings_dict,
+        "kissam Daily Offerings": kissam_daily_offerings_dict,
         "ebi breakfast": ebi_breakfast_dict,
         "ebi lunch": ebi_lunch_dict,
         "ebi dinner": ebi_dinner_dict,
-        "ebi daily offerings": ebi_daily_offerings_dict,
+        "ebi Daily Offerings": ebi_daily_offerings_dict,
         "roth breakfast": roth_breakfast_dict,
         "roth lunch": roth_lunch_dict,
         "roth dinner": roth_dinner_dict,
-        "roth daily offerings": roth_daily_offerings_dict,
-        "pub": pub_daily_offerings_dict,
-        "zeppos breakfast": zeppos_breakfast_dict,
-        "zeppos lunch": zeppos_lunch_dict,
-        "zeppos dinner": zeppos_dinner_dict,
-        "zeppos daily offerings": zeppos_daily_offerings_dict,
-        "rand grab & go market": rand_gg_daily_offerings_dict,
-        "branscomb munchie": branscomb_munchie_daily_offerings_dict,
-        "commons munchie": commons_munchie_daily_offerings_dict,
-        "highland munchie": highland_munchie_daily_offerings_dict,
-        "kissam munchie": kissam_munchie_daily_offerings_dict,
-        "local java": local_java_daily_offerings_dict
+        "roth Daily Offerings": roth_daily_offerings_dict,
+        "The Pub": pub_daily_offerings_dict,
+        "Zeppos Breakfast": zeppos_breakfast_dict,
+        "Zeppos Lunch": zeppos_lunch_dict,
+        "Zeppos Dinner": zeppos_dinner_dict,
+        "Zeppos Daily Offerings": zeppos_daily_offerings_dict,
+        "Rand Grab & Go Market": rand_gg_daily_offerings_dict,
+        "Branscomb Munchie": branscomb_munchie_daily_offerings_dict,
+        "Commons Munchie": commons_munchie_daily_offerings_dict,
+        "Highland Munchie": highland_munchie_daily_offerings_dict,
+        "Kissam Munchie": kissam_munchie_daily_offerings_dict,
+        "Local Java": local_java_daily_offerings_dict
     }
 
 
-    dining_halls_corpus = ["2301 breakfast", "2301 daily offerings", "rand breakfast", "rand lunch", "commons breakfast", "commons lunch", "commons dinner", "commons daily offerings", "kissam breakfast", "kissam lunch", "kissam dinner", "kissam daily offerings", "ebi breakfast", "ebi lunch", "ebi dinner", "ebi daily offerings", "roth breakfast", "roth lunch", "roth dinner", "roth daily offerings", "zeppos breakfast", "zeppos lunch", "zeppos dinner", "zeppos daily offerings", "pub", "rand grab & go market", "branscomb munchie", "commons munchie", "highland munchie", "kissam munchie", "local java"]
+    dining_halls_corpus = ["2301 breakfast", "2301 Daily Offerings", "rand breakfast", "rand lunch", "commons breakfast", "commons lunch", "commons dinner", "commons Daily Offerings", "kissam breakfast", "kissam lunch", "kissam dinner", "kissam Daily Offerings", "ebi breakfast", "ebi lunch", "ebi dinner", "ebi Daily Offerings", "roth breakfast", "roth lunch", "roth dinner", "roth Daily Offerings", "zeppos breakfast", "Zeppos Lunch", "Zeppos Dinner", "Zeppos Daily Offerings", "The Pub", "Rand Grab & Go Market", "Branscomb Munchie", "Commons Munchie", "Highland Munchie", "Kissam Munchie", "Local Java"]
     for option in dining_halls_corpus:
-        q = "What is" + option + "serving today?"
-        a = option + "is serving the following: "
-        foods = 's, '.join(list(reference[option].keys()))
+        q = "What is " + option + " serving today?"
+        a = option + " is serving the following: "
+        foods = ', '.join(list(reference[option].keys()))
         a += foods
         qa = [q, a]
         temp.append(qa)
@@ -1949,8 +1953,23 @@ def webScrapeAndTrain():
 
     trainer = ChatterBotCorpusTrainer(chatbot)
     trainer.train(
-        "/app/VanderbiltDiningChatbot/training_data.yaml"
+        "/app/training_data.yaml"
     )
+
+def set_chrome_options() -> Options:
+    """Sets chrome options for Selenium.
+    Chrome options for headless browser is enabled.
+    """
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--window-size=1920,1080")
+    chrome_options.add_argument("--start-maximized")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_prefs = {}
+    chrome_options.experimental_options["prefs"] = chrome_prefs
+    chrome_prefs["profile.default_content_settings"] = {"images": 2}
+    return chrome_options
 
 if __name__ == "__main__":
     webScrapeAndTrain()
