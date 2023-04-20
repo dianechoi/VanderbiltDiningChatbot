@@ -103,8 +103,8 @@ def index():
 
 
 CONNECTION = 'mongodb://elliot:erindiane@' + ipMongodb + ":27017"
-client = MongoClient(CONNECTION)
-db = client["history"]
+mongoClient = MongoClient(CONNECTION)
+db = mongoClient["history"]
 col = db[chat_id]
 
 
@@ -113,8 +113,6 @@ col = db[chat_id]
 def get_bot_response():
     global timer
     global chat_id
-    global CONNECTION
-    global client
     global db
     global col
     timer = 60
@@ -136,7 +134,6 @@ def lookup():
 @app.route("/id")
 def get_chat_convo():
     global CONNECTION
-    global client
     global db
     global col
     user_input_id = request.args.get('msg')
