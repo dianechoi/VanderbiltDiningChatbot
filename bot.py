@@ -113,10 +113,7 @@ def get_response(input_statement, response_list, storage=None):
                 return statement_c
         print('THESE STATEMENTS ABOVE FAILED ', file=sys.stdout)
 
-        return input_statement          
-        similarity = LevenshteinDistance().compare(statement_a.text, statement_b.text)
-        
-        return similarity
+    return input_statement          
 
 
 chatbot = ChatBot(
