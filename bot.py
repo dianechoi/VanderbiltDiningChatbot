@@ -1,4 +1,3 @@
-import copy
 from flask import Flask, render_template, url_for, request, redirect
 from chatterbot import ChatBot
 from chatterbot import comparisons
@@ -15,6 +14,7 @@ import time
 import random
 import string
 import sys
+import copy
 
 class Config:
     SCHEDULER_API_ENABLED = True
@@ -41,6 +41,8 @@ def response_selector(input_statement, response_list, storage=None):
     for statement_c in response_list:
         statement_a = str(copy.deepcopy(statement_d.text)).lower()
         statement_b = str(copy.deepcopy(statement_c.text)).lower()
+        print(statement_a,file=sys.stderr)
+        print(statement_b,file=sys.stderr)
         dining_halls_corpus = ["2301 breakfast", "2301 Daily Offerings", "rand breakfast", "rand lunch", "commons breakfast", "commons lunch", "commons dinner", "commons Daily Offerings", "kissam breakfast", "kissam lunch", "kissam dinner", "kissam Daily Offerings", "ebi breakfast", "ebi lunch", "ebi dinner", "ebi Daily Offerings", "roth breakfast", "roth lunch", "roth dinner", "roth Daily Offerings", "zeppos breakfast", "Zeppos Lunch", "Zeppos Dinner", "Zeppos Daily Offerings", "The Pub", "Rand Grab & Go Market", "Branscomb Munchie", "Commons Munchie", "Highland Munchie", "Kissam Munchie", "Local Java"]
         for phrase in dining_halls_corpus:
             words = phrase.split(' ')
