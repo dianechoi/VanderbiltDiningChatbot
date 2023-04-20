@@ -102,7 +102,7 @@ def index():
     return render_template("chatbot.html", id=chat_id)
 
 
-CONNECTION = "mongodb://elliot:erindiane@129.114.26.125:8080"
+CONNECTION = 'mongodb://elliot:erindiane@' + ipMongodb + ":27017"
 client = MongoClient(CONNECTION)
 db = client["history"]
 col = db[chat_id]
