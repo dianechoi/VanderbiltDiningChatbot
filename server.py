@@ -95,9 +95,8 @@ db = mongoClient["history"]
 
 @app.route("/id")
 def get_chat_convo():
-    global CONNECTION
-    global mclient
     global db
+    print('here')
     user_input_id = request.args.get('msg')
     col = db[user_input_id]
     cursor = col.find({}, {'_id': False})
