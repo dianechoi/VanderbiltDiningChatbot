@@ -4,6 +4,8 @@ from chatterbot.trainers import ListTrainer
 from chatterbot.trainers import ChatterBotCorpusTrainer
 from kubernetes import client, config
 from flask_apscheduler import APScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
+
 from pymongo import MongoClient
 import time
 import random
@@ -22,7 +24,7 @@ scheduler.init_app(app)
 scheduler.start()
 
 i = 0
-timer = 30
+timer = 60
 
 config.load_incluster_config()
 api = client.CoreV1Api()
@@ -68,7 +70,7 @@ trainer.train(
 #     else:
 #         print(f"{chatbot.get_response(query)}")
 
-@scheduler.task('interval', id='do_job_1', seconds=1, misfire_grace_time=900)
+#@scheduler.task('interval', id='do_job_1', seconds=1, misfire_grace_time=900)
 def job1():
     global timer
     timer -= 1
@@ -150,5 +152,9 @@ def get_chat_convo():
 
 
 if __name__ == "__main__":
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(func=job1, trigger="interval", seconds=2)
+    scheduler.start()
+
     # app.run()
     app.run(debug=True, host='0.0.0.0')
