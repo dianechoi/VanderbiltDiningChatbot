@@ -89,9 +89,9 @@ class PersonalComparator(Comparator):
 
 def get_response(input_statement, response_list, storage=None):
     statement_a = input_statement
-    for statement_b in response_list:
+    for statement_c in response_list:
         statement_a = str(statement_a).lower()
-        statement_b = str(statement_b).lower()
+        statement_b = str(statement_c).lower()
         print(statement_a, file=sys.stdout)
         print(statement_b, file=sys.stdout)
         dining_halls_corpus = ["2301 breakfast", "2301 Daily Offerings", "rand breakfast", "rand lunch", "commons breakfast", "commons lunch", "commons dinner", "commons Daily Offerings", "kissam breakfast", "kissam lunch", "kissam dinner", "kissam Daily Offerings", "ebi breakfast", "ebi lunch", "ebi dinner", "ebi Daily Offerings", "roth breakfast", "roth lunch", "roth dinner", "roth Daily Offerings", "zeppos breakfast", "Zeppos Lunch", "Zeppos Dinner", "Zeppos Daily Offerings", "The Pub", "Rand Grab & Go Market", "Branscomb Munchie", "Commons Munchie", "Highland Munchie", "Kissam Munchie", "Local Java"]
@@ -108,10 +108,10 @@ def get_response(input_statement, response_list, storage=None):
             if exact:
                 print('THESE STATEMENTS ABOVE HIT ****************', file=sys.stdout)
 
-                return statement_b
+                return statement_c
         print('THESE STATEMENTS ABOVE FAILED ', file=sys.stdout)
 
-        return "idk"            
+        return input_statement          
         similarity = LevenshteinDistance().compare(statement_a.text, statement_b.text)
         
         return similarity
