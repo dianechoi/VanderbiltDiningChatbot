@@ -13,8 +13,6 @@ from pymongo import MongoClient
 import time
 import random
 import string
-import sys
-import copy
 
 class Config:
     SCHEDULER_API_ENABLED = True
@@ -36,15 +34,88 @@ time.sleep(0.1)
 service = api.read_namespaced_service(name="mongo-nodeport-svc", namespace='default')
 ipMongodb = service.spec.cluster_ip
 
+dining_halls_corpus = [
+    # Dining halls - Options
+    "2301 breakfast options",
+    "2301 daily offerings options",
+    "Rand breakfast options",
+    "Rand lunch options",
+    "Commons breakfast options",
+    "Commons lunch options",
+    "Commons dinner options",
+    "Commons daily offerings options",
+    "Kissam breakfast options",
+    "Kissam lunch options",
+    "Kissam dinner options",
+    "Kissam daily offerings options",
+    "EBI breakfast options",
+    "EBI lunch options",
+    "EBI dinner options",
+    "EBI daily offerings options",
+    "Rothschild breakfast options",
+    "Rothschild lunch options",
+    "Rothschild dinner options",
+    "Rothschild daily offerings options",
+    "The Pub daily offerings options",
+    "Zeppos breakfast options",
+    "Zeppos lunch options",
+    "Zeppos dinner options",
+    "Zeppos daily offerings options",
+    # Dining halls - Ingredients
+    "2301 breakfast ingredients",
+    "2301 daily offerings ingredients",
+    "Rand breakfast ingredients",
+    "Rand lunch ingredients",
+    "Commons breakfast ingredients",
+    "Commons lunch ingredients",
+    "Commons dinner ingredients",
+    "Commons daily offerings ingredients",
+    "Kissam breakfast ingredients",
+    "Kissam lunch ingredients",
+    "Kissam dinner ingredients",
+    "Kissam daily offerings ingredients",
+    "EBI breakfast ingredients",
+    "EBI lunch ingredients",
+    "EBI dinner ingredients",
+    "EBI daily offerings ingredients",
+    "Rothschild breakfast ingredients",
+    "Rothschild lunch ingredients",
+    "Rothschild dinner ingredients",
+    "Rothschild daily offerings ingredients",
+    "The Pub daily offerings ingredients",
+    "Zeppos breakfast ingredients",
+    "Zeppos lunch ingredients",
+    "Zeppos dinner ingredients",
+    "Zeppos daily offerings ingredients"
+] 
+munchies_corpus = [
+    "Rand Grab & Go Market",
+    "Branscomb Munchie",
+    "Commons Munchie",
+    "Highland Munchie",
+    "Kissam Munchie",
+    "Local Java"
+]
+dining_halls_hours_corpus = [        
+    "2301 hours",
+    "Rand hours",
+    "Commons hours",
+    "Kissam hours",
+    "EBI hours",
+    "Rothschild hours",
+    "Pub hours",
+    "Zeppos hours"
+]
 def response_selector(input_statement, response_list, storage=None):
+    global dining_halls_corpus
+    global munchies_corpus
+    global dining_halls_hours_corpus
+    total_list = dining_halls_corpus + munchies_corpus + dining_halls_hours_corpus
     statement_d = input_statement
     for statement_c in response_list:
-        statement_a = str(copy.deepcopy(statement_d.text)).lower()
-        statement_b = str(copy.deepcopy(statement_c.text)).lower()
-        print(statement_a,file=sys.stderr)
-        print(statement_b,file=sys.stderr)
-        dining_halls_corpus = ["2301 breakfast", "2301 Daily Offerings", "rand breakfast", "rand lunch", "commons breakfast", "commons lunch", "commons dinner", "commons Daily Offerings", "kissam breakfast", "kissam lunch", "kissam dinner", "kissam Daily Offerings", "ebi breakfast", "ebi lunch", "ebi dinner", "ebi Daily Offerings", "roth breakfast", "roth lunch", "roth dinner", "roth Daily Offerings", "zeppos breakfast", "Zeppos Lunch", "Zeppos Dinner", "Zeppos Daily Offerings", "The Pub", "Rand Grab & Go Market", "Branscomb Munchie", "Commons Munchie", "Highland Munchie", "Kissam Munchie", "Local Java"]
-        for phrase in dining_halls_corpus:
+        statement_a = str(statement_d.text).lower()
+        statement_b = str(statement_c.text).lower()
+        for phrase in total_list:
             words = phrase.split(' ')
             exact = True
             for i in words:
