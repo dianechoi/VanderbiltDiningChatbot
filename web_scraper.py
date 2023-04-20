@@ -1899,46 +1899,182 @@ def webScrapeAndTrain():
     temp = []
 
     reference = {
-        "2301 breakfast": breakfast_2301_dict,
-        "2301 daily offerings": daily_offerings_2301_dict,
-        "Rand breakfast": rand_breakfast_dict,
-        "Rand lunch": rand_lunch_dict,
-        "Commons breakfast": commons_breakfast_dict,
-        "Commons lunch": commons_lunch_dict,
-        "Commons dinner": commons_dinner_dict,
-        "Commons daily offerings": commons_daily_offerings_dict,
-        "Kissam breakfast": kissam_breakfast_dict,
-        "Kissam lunch": kissam_lunch_dict,
-        "Kissam dinner": kissam_dinner_dict,
-        "Kissam daily offerings": kissam_daily_offerings_dict,
-        "EBI breakfast": ebi_breakfast_dict,
-        "EBI lunch": ebi_lunch_dict,
-        "EBI dinner": ebi_dinner_dict,
-        "EBI daily offerings": ebi_daily_offerings_dict,
-        "Rothschild breakfast": roth_breakfast_dict,
-        "Rothschild lunch": roth_lunch_dict,
-        "Rothschild dinner": roth_dinner_dict,
-        "Rothschild daily offerings": roth_daily_offerings_dict,
-        "The Pub": pub_daily_offerings_dict,
-        "Zeppos breakfast": zeppos_breakfast_dict,
-        "Zeppos lunch": zeppos_lunch_dict,
-        "Zeppos dinner": zeppos_dinner_dict,
-        "Zeppos daily offerings": zeppos_daily_offerings_dict,
-        "Rand Grab & Go Market": rand_gg_daily_offerings_dict,
-        "Branscomb Munchie": branscomb_munchie_daily_offerings_dict,
-        "Commons Munchie": commons_munchie_daily_offerings_dict,
-        "Highland Munchie": highland_munchie_daily_offerings_dict,
-        "Kissam Munchie": kissam_munchie_daily_offerings_dict,
-        "Local Java": local_java_daily_offerings_dict
+        # Dining halls - Options
+        "2301 breakfast options": breakfast_2301_dict,
+        "2301 daily offerings options": daily_offerings_2301_dict,
+        "Rand breakfast options": rand_breakfast_dict,
+        "Rand lunch options": rand_lunch_dict,
+        "Commons breakfast options": commons_breakfast_dict,
+        "Commons lunch options": commons_lunch_dict,
+        "Commons dinner options": commons_dinner_dict,
+        "Commons daily offerings options": commons_daily_offerings_dict,
+        "Kissam breakfast options": kissam_breakfast_dict,
+        "Kissam lunch options": kissam_lunch_dict,
+        "Kissam dinner options": kissam_dinner_dict,
+        "Kissam daily offerings options": kissam_daily_offerings_dict,
+        "EBI breakfast options": ebi_breakfast_dict,
+        "EBI lunch options": ebi_lunch_dict,
+        "EBI dinner options": ebi_dinner_dict,
+        "EBI daily offerings options": ebi_daily_offerings_dict,
+        "Rothschild breakfast options": roth_breakfast_dict,
+        "Rothschild lunch options": roth_lunch_dict,
+        "Rothschild dinner options": roth_dinner_dict,
+        "Rothschild daily offerings options": roth_daily_offerings_dict,
+        "The Pub daily offerings options": pub_daily_offerings_dict,
+        "Zeppos breakfast options": zeppos_breakfast_dict,
+        "Zeppos lunch options": zeppos_lunch_dict,
+        "Zeppos dinner options": zeppos_dinner_dict,
+        "Zeppos daily offerings options": zeppos_daily_offerings_dict,
+        # Dining halls - Ingredients
+        "2301 breakfast ingredients": breakfast_2301_dict,
+        "2301 daily offerings ingredients": daily_offerings_2301_dict,
+        "Rand breakfast ingredients": rand_breakfast_dict,
+        "Rand lunch ingredients": rand_lunch_dict,
+        "Commons breakfast ingredients": commons_breakfast_dict,
+        "Commons lunch ingredients": commons_lunch_dict,
+        "Commons dinner ingredients": commons_dinner_dict,
+        "Commons daily offerings ingredients": commons_daily_offerings_dict,
+        "Kissam breakfast ingredients": kissam_breakfast_dict,
+        "Kissam lunch ingredients": kissam_lunch_dict,
+        "Kissam dinner ingredients": kissam_dinner_dict,
+        "Kissam daily offerings ingredients": kissam_daily_offerings_dict,
+        "EBI breakfast ingredients": ebi_breakfast_dict,
+        "EBI lunch ingredients": ebi_lunch_dict,
+        "EBI dinner ingredients": ebi_dinner_dict,
+        "EBI daily offerings ingredients": ebi_daily_offerings_dict,
+        "Rothschild breakfast ingredients": roth_breakfast_dict,
+        "Rothschild lunch ingredients": roth_lunch_dict,
+        "Rothschild dinner ingredients": roth_dinner_dict,
+        "Rothschild daily offerings ingredients": roth_daily_offerings_dict,
+        "The Pub daily offerings ingredients": pub_daily_offerings_dict,
+        "Zeppos breakfast ingredients": zeppos_breakfast_dict,
+        "Zeppos lunch ingredients": zeppos_lunch_dict,
+        "Zeppos dinner ingredients": zeppos_dinner_dict,
+        "Zeppos daily offerings ingredients": zeppos_daily_offerings_dict,
+        # Munchies
+        "Rand Grab & Go Market daily offerings": rand_gg_daily_offerings_dict,
+        "Branscomb Munchie daily offerings": branscomb_munchie_daily_offerings_dict,
+        "Commons Munchie daily offerings": commons_munchie_daily_offerings_dict,
+        "Highland Munchie daily offerings": highland_munchie_daily_offerings_dict,
+        "Kissam Munchie daily offerings": kissam_munchie_daily_offerings_dict,
+        "Local Java daily offerings": local_java_daily_offerings_dict,
+        # Dining halls - Hours
+        "2301": hours_2301_list,
+        "Rand Dining Center": rand_hours_list,
+        "Commons Dining Center": commons_hours_list,
+        "The Kitchen at Kissam": kissam_hours_list,
+        "EBI Dining Center": ebi_hours_list,
+        "Rothschild Dining Center": roth_hours_list,
+        "The Pub": pub_hours_list,
+        "Zeppos Dining Center": zeppos_hours_list
     }
 
-
-    dining_halls_corpus = ["2301 breakfast", "2301 daily offerings", "Rand breakfast", "Rand lunch", "Commons breakfast", "Commons lunch", "Commons dinner", "Commons daily offerings", "Kissam breakfast", "Kissam lunch", "Kissam dinner", "Kissam daily offerings", "EBI breakfast", "EBI lunch", "EBI dinner", "EBI daily offerings", "Rothschild breakfast", "Rothschild lunch", "Rothschild dinner", "Rothschild daily offerings", "Zeppos breakfast", "Zeppos lunch", "Zeppos dinner", "Zeppos daily offerings", "The Pub", "Rand Grab & Go Market", "Branscomb Munchie", "Commons Munchie", "Highland Munchie", "Kissam Munchie", "Local Java"]
+    # dining_halls_corpus = ["2301 breakfast options", "2301 daily offerings", "Rand breakfast", "Rand lunch", "Commons breakfast", "Commons lunch", "Commons dinner", "Commons daily offerings", "Kissam breakfast", "Kissam lunch", "Kissam dinner", "Kissam daily offerings", "EBI breakfast", "EBI lunch", "EBI dinner", "EBI daily offerings", "Rothschild breakfast", "Rothschild lunch", "Rothschild dinner", "Rothschild daily offerings", "Zeppos breakfast", "Zeppos lunch", "Zeppos dinner", "Zeppos daily offerings", "The Pub", "Rand Grab & Go Market", "Branscomb Munchie", "Commons Munchie", "Highland Munchie", "Kissam Munchie", "Local Java"]
+    dining_halls_corpus = [
+        # Dining halls - Options
+        "2301 breakfast options",
+        "2301 daily offerings options",
+        "Rand breakfast options",
+        "Rand lunch options",
+        "Commons breakfast options",
+        "Commons lunch options",
+        "Commons dinner options",
+        "Commons daily offerings options",
+        "Kissam breakfast options",
+        "Kissam lunch options",
+        "Kissam dinner options",
+        "Kissam daily offerings options",
+        "EBI breakfast options",
+        "EBI lunch options",
+        "EBI dinner options",
+        "EBI daily offerings options",
+        "Rothschild breakfast options",
+        "Rothschild lunch options",
+        "Rothschild dinner options",
+        "Rothschild daily offerings options",
+        "The Pub daily offerings options",
+        "Zeppos breakfast options",
+        "Zeppos lunch options",
+        "Zeppos dinner options",
+        "Zeppos daily offerings options",
+        # Dining halls - Ingredients
+        "2301 breakfast ingredients",
+        "2301 daily offerings ingredients",
+        "Rand breakfast ingredients",
+        "Rand lunch ingredients",
+        "Commons breakfast ingredients",
+        "Commons lunch ingredients",
+        "Commons dinner ingredients",
+        "Commons daily offerings ingredients",
+        "Kissam breakfast ingredients",
+        "Kissam lunch ingredients",
+        "Kissam dinner ingredients",
+        "Kissam daily offerings ingredients",
+        "EBI breakfast ingredients",
+        "EBI lunch ingredients",
+        "EBI dinner ingredients",
+        "EBI daily offerings ingredients",
+        "Rothschild breakfast ingredients",
+        "Rothschild lunch ingredients",
+        "Rothschild dinner ingredients",
+        "Rothschild daily offerings ingredients",
+        "The Pub daily offerings ingredients",
+        "Zeppos breakfast ingredients",
+        "Zeppos lunch ingredients",
+        "Zeppos dinner ingredients",
+        "Zeppos daily offerings ingredients"
+    ]
     for option in dining_halls_corpus:
-        q = "What is " + option + " serving today?"
-        a = option + " is serving the following: "
+        q = "What are the " + option + " today?" # What are the Commons lunch options today?
+        a = option + " for today are: " # Commons lunch options for today are: 
         foods = ', '.join(list(reference[option].keys()))
         a += foods
+        qa = [q, a]
+        temp.append(qa)
+    for option in dining_halls_corpus:
+        menus = reference[option].keys()
+        for menu in menus:
+            q = "What are the " + option + " for " + menu + " today?" # What are the Commons lunch ingredients for Smoothies today?
+            a = option + " for " + menu + " are: " # Commons lunch ingredients for Smoothies are: 
+            foods = ', '.join(list(reference.get(option)[menu]))
+            a += foods
+            qa = [q, a]
+            temp.append(qa)
+    
+    munchies_corpus = [
+        "Rand Grab & Go Market daily offerings",
+        "Branscomb Munchie daily offerings",
+        "Commons Munchie daily offerings",
+        "Highland Munchie daily offerings",
+        "Kissam Munchie daily offerings",
+        "Local Java daily offerings"
+    ]
+    # Munchie
+    for option in munchies_corpus:
+        menus = reference[option].keys()
+        for menu in menus:
+            q = "What are the " + option + "?" # What are the Rand Grab & Go Market daily offerings?
+            a = option + " are: " # Rand Grab & Go Market daily offerings are: 
+            foods = ', '.join(list(reference.get(option)[menu]))
+            a += foods
+            qa = [q, a]
+            temp.append(qa)
+
+    dining_halls_hours_corpus = [        
+        "2301",
+        "Rand Dining Center",
+        "Commons Dining Center",
+        "The Kitchen at Kissam",
+        "EBI Dining Center",
+        "Rothschild Dining Center",
+        "The Pub",
+        "Zeppos Dining Center"
+    ]
+    for option in dining_halls_hours_corpus:
+        q = "What are the hours for " + option + "?" # What are the hours for 2301?
+        a = "The hours for " + option + " are: "  # The hours for 2301 are: 
+        hours_return = reference[option]
+        a += hours_return
         qa = [q, a]
         temp.append(qa)
 
