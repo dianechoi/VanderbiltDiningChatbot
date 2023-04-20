@@ -67,7 +67,7 @@ chatbot = ChatBot(
         'import_path': 'chatterbot.logic.BestMatch',
         'default_response': 'I am sorry, but I do not understand.',
         'statement_comparison_function': keyword_weighted_comparison,
-        'response_selection_method': response_selection.get_first_response,
+        'response_selection_method': response_selection.get_random_response,
         'maximum_similarity_threshold': 1.0
     }
     ],
