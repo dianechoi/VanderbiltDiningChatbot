@@ -53,7 +53,8 @@ def response_selector(input_statement, response_list, storage=None):
                     exact = False
             if exact:
                 return statement_c
-    return "Sorry, I could not understand. Please format your question in the following way: 'What is [Dining Hall] [Breakfast/Lunch/Dinner/Daily Offerings] serving today?'"          
+    statement_d.text = "Sorry, I could not understand. Please format your question in the following way: 'What is [Dining Hall] [Breakfast/Lunch/Dinner/Daily Offerings] serving today?'"
+    return statement_d        
 
 chatbot = ChatBot(
     'My Chatterbot',
